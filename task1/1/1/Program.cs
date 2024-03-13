@@ -5,7 +5,7 @@ Console.WriteLine("Введите числа через запятую");
 while (true)
 {
     var input = Console.ReadLine();
-    if (!Regex.IsMatch(input, @"^-?\d+(,\d+)*$")) //задаю шаблон 
+    if (!Regex.IsMatch(input, @"-?\d+(,\d+)*")) //задаю шаблон 
     {
         Console.WriteLine("Ошибка: ввод не соответствует формату.");
         continue;
