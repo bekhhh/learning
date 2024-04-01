@@ -9,7 +9,10 @@ while (true)
         Console.Write("Ошибка: Введите текст ");
         continue;
     }
-    var words = input.Split(' ').Select(x => x.Trim()).ToArray();
+    var words = input.Split(' ').
+        Select(x => x.Trim()).
+        Where(x => !string.IsNullOrEmpty(x)).
+        ToArray();
     var dictionary = new Dictionary<string, List<int>>();
     for (int i = 0; i < words.Length; i++)
     {
