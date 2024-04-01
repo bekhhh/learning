@@ -8,41 +8,38 @@ while (true)
     try
     {
         var input = Console.ReadLine();
-        var figure = input.Split(',');
-        foreach (var word in figure)
+        var figures = input.Split(',');
+        foreach (var figure in figures)
         {
-            var index = word.Split(' ').
-                Select(x => x.Trim()).
-                ToArray();
-            if (index[0] == "круг")
+            var words = figure.Split(' ')
+                .Select(x => x.Trim())
+                  .Where(x => !string.IsNullOrEmpty(x))
+                  .ToArray(); ;
+            if (words[0] == "круг")
             {
-                var circle = new Circle
-                {
-                    Radius = double.Parse(index[1], CultureInfo.InvariantCulture)
-                };
+                var circle = new Circle();
+                circle.Radius = circle.DoubleCircleParse(words[1]);
                 circle.PrintArea();
             }
-            else if (index[0] == "треугольник")
+            else if (words[0] == "треугольник")
             {
-                var triangle = new Triangle
-                {
-                    Side = double.Parse(index[1], CultureInfo.InvariantCulture),
-                    Height = double.Parse(index[2], CultureInfo.InvariantCulture)
-                };
+                var triangle = new Triangle();
+                var (side, height) = triangle.DoubleTreangleRectangleParse(words[1], words[2]);
+                triangle.Side = side;
+                triangle.Height = height;
                 triangle.PrintArea();
             }
-            else if (index[0] == "прямоугольник")
+            else if (words[0] == "прямоугольник")
             {
-                var rectangle = new Rectangle
-                {
-                    SideA = double.Parse(index[1], CultureInfo.InvariantCulture),
-                    SideB = double.Parse(index[2], CultureInfo.InvariantCulture)
-                };
+                var rectangle = new Rectangle();
+                var (sideA, sideB) = rectangle.DoubleTreangleRectangleParse(words[1], words[2]);
+                rectangle.SideA = sideA;
+                rectangle.SideB = sideB;
                 rectangle.PrintArea();
             }
             else
             {
-                Console.WriteLine("В наличии только круг,прямоугольник и треугольник");
+                throw new FormatException("Неверный формат строки.");
             }
         }
     }
