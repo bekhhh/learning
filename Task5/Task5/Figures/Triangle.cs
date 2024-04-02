@@ -2,7 +2,7 @@
 using Task5.Shapes;
 
 namespace Task5.Figures
-{
+{   
     public class Triangle : Shape
     {
         public double Side { get; set; }
@@ -19,7 +19,7 @@ namespace Task5.Figures
                 throw new ArgumentException("Сторона не должна быть меньше или равна к нулю.");
             }
             return side;
-        }       
+        }
         public override double CalculateArea()
         {
             return Math.Round(Side * Height / 2, 2);

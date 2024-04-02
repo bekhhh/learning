@@ -15,12 +15,12 @@ while (true)
         var words = figure.Split(' ')
             .Select(x => x.Trim())
             .Where(x => !string.IsNullOrEmpty(x))
-            .ToArray(); ;
+            .ToArray(); 
         if (words[0] == "круг")
         {
             if (words.Length != 2)
             {
-                Console.WriteLine("Длина ввода не должна быть равна двум");
+                Console.WriteLine("Длина ввода для круга не должна быть равна двум");
                 continue;
             }
             var circle = new Circle();
