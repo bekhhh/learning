@@ -1,16 +1,15 @@
 ﻿using System.Globalization;
-using Task5.InputParse;
 using Task5.Shapes;
 
 namespace Task5.Figures
 {
-    public class Circle : Shape, IDoubleCircleParse
+    public class Circle : Shape
     {
         public double Radius { get; set; }
 
-        public double DoubleCircleParse(string value)
+        public override double DoubleParse(string value)
         {
-            if (!double.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var radius))
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var radius))
             {
                 throw new FormatException("Неверный формат строки.");
             }

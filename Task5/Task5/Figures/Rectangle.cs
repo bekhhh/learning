@@ -1,26 +1,24 @@
 ﻿using System.Globalization;
-using Task5.InputParse;
 using Task5.Shapes;
 
 namespace Task5.Figures
 {
-    public class Rectangle : Shape,IDoubleTreangleRectangle
+    public class Rectangle : Shape
     {
         public double SideA { get; set; }
         public double SideB { get; set; }
 
-        public (double, double) DoubleTreangleRectangleParse(string value1, string value2)
+        public override double DoubleParse(string value)
         {
-            if (!double.TryParse(value1, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sideA) ||
-               (!double.TryParse(value2, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var sideB)))
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var side))
             {
                 throw new FormatException("Неверный формат строки.");
             }
-            else if (sideA <= 0 || sideB <= 0)
+            else if (side <= 0)
             {
-                throw new ArgumentException("Стороны не должны быть меньше или равны к нулю.");
+                throw new ArgumentException("Сторона не должна быть меньше или равна к нулю.");
             }
-            return (sideA, sideB);
+            return side;
         }
         public override double CalculateArea()
         {
