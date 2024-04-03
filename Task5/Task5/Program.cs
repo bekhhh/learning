@@ -20,7 +20,7 @@ while (true)
         {
             if (words.Length != 2)
             {
-                Console.WriteLine("Длина ввода для круга не должна быть равна двум");
+                Console.WriteLine("Длина ввода для круга должна быть равна двум");
                 continue;
             }
             var circle = new Circle();
@@ -29,6 +29,11 @@ while (true)
         }
         else if (words[0] == "треугольник")
         {
+            if (words.Length != 3)
+            {
+                Console.WriteLine("Длина ввода для треугольника должна быть равна трем");
+                continue;
+            }
             var triangle = new Triangle();
             triangle.Side = triangle.DoubleParse(words[1]);
             triangle.Height = triangle.DoubleParse(words[2]);
@@ -36,6 +41,11 @@ while (true)
         }
         else if (words[0] == "прямоугольник")
         {
+            if (words.Length != 3)
+            {
+                Console.WriteLine("Длина ввода для прямоугольника должна быть равна трем");
+                continue;
+            }
             var rectangle = new Rectangle();
             rectangle.SideA = rectangle.DoubleParse(words[1]);
             rectangle.SideB = rectangle.DoubleParse(words[2]);
