@@ -25,5 +25,11 @@
                 default: throw new ArgumentOutOfRangeException();
             }
         }
+
+        public static Tree GetSimple(double number) => new()
+        {
+            Number = number,
+            Operation = Operation.None,
+        };
     }
 }
