@@ -1,4 +1,5 @@
-﻿var color = ConsoleColor.Yellow;
+﻿
+var color = ConsoleColor.Yellow;
 string prefix = "info: ";
 while (true)
 {
