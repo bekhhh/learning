@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
-using Task5.Shapes;
 
-namespace Task5.Figures
+namespace Task5.Shapes
 {
     public class Rectangle : Shape
     {
@@ -10,7 +9,7 @@ namespace Task5.Figures
 
         public override double CalculateArea()
         {
-            return Math.Round(SideA * SideB, 2);          
-        }   
+            return Math.Round(SideA * SideB, 2);
+        }
     }
 }

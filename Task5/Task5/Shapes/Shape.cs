@@ -4,7 +4,7 @@ namespace Task5.Shapes
 {
     public abstract class Shape
     {               
-        public double DoubleParseElements(string value)
+        public double ParseToDouble(string value)
         {
             if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var element))
             {

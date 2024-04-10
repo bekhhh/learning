@@ -1,8 +1,7 @@
 ﻿using System.Globalization;
-using Task5.Shapes;
 
-namespace Task5.Figures
-{   
+namespace Task5.Shapes
+{
     public class Triangle : Shape
     {
         public double Side { get; set; }

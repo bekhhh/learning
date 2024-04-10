@@ -1,11 +1,10 @@
-﻿using Task5.Figures;
-using Task5.Shapes;
+﻿using Task5.Shapes;
 
-try
+var shapes = new List<Shape>();
+Console.WriteLine("Введите описания фигур через запятую: ");
+while (true)
 {
-    var shapes = new List<Shape>();
-    Console.WriteLine("Введите описания фигур через запятую: ");
-    while (true)
+    try
     {
         var input = Console.ReadLine();
         if (string.IsNullOrEmpty(input))
@@ -28,7 +27,7 @@ try
                     continue;
                 }
                 var circle = new Circle();
-                circle.Radius =circle.DoubleParseElements(words[1]);               
+                circle.Radius = circle.ParseToDouble(words[1]);
                 shapes.Add(circle);
             }
             else if (words[0] == "треугольник")
@@ -39,8 +38,8 @@ try
                     continue;
                 }
                 var triangle = new Triangle();
-                triangle.Side = triangle.DoubleParseElements(words[1]);
-                triangle.Height = triangle.DoubleParseElements(words[2]);
+                triangle.Side = triangle.ParseToDouble(words[1]);
+                triangle.Height = triangle.ParseToDouble(words[2]);
                 shapes.Add(triangle);
             }
             else if (words[0] == "прямоугольник")
@@ -51,23 +50,22 @@ try
                     continue;
                 }
                 var rectangle = new Rectangle();
-                rectangle.SideA = rectangle.DoubleParseElements(words[1]);
-                rectangle.SideB = rectangle.DoubleParseElements(words[2]);
+                rectangle.SideA = rectangle.ParseToDouble(words[1]);
+                rectangle.SideB = rectangle.ParseToDouble(words[2]);
                 shapes.Add(rectangle);
             }
             else
             {
                 Console.WriteLine("Неверный формат строки.");
-                continue;
-            }           
+            }
         }
         foreach (var shape in shapes)
         {
             shape.PrintArea();
         }
     }
-}
-catch (Exception ex) 
-{
-    Console.WriteLine(ex.Message);
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
 }
