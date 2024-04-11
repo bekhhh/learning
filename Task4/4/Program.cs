@@ -2,26 +2,41 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-var dictionary = new Dictionary<string,int>();
-var filePath =@"C:\Projects\forTask.txt";
-if (File.Exists(filePath))
+var dictionary = new Dictionary<string, List<int>>();
+var filePath = @"C:\Projects\forTask.txt";
+if (!File.Exists(filePath)) // проверяем на наличие файла
 {
-    string[] lines = File.ReadAllLines(filePath);
-    foreach (string line in lines)
+    Console.WriteLine("Файл не существует");
+    return;
+}
+var lines = File.ReadAllLines(filePath); // читаем файл
+var firstLine = lines[0];
+var arrayOfSymbols = firstLine.Split(',')
+                       .Select(x => x.Trim())
+                       .Where(x => !string.IsNullOrEmpty(x))
+                       .ToArray(); // тут разделили и убрали лишние пробелы
+for (int i = 1; i < lines.Length; i++) // начинаем с первого индекса, тк как 0 индекс нам не нужен(там наши символы)
+{
+    var currentLine = lines[i];
+    foreach (var symbol in arrayOfSymbols)
     {
-        var arrayOfStrings = line.Split(',')
-            .Select(x => x.Trim())
-            .Where(x => !string.IsNullOrEmpty(x))
-            .ToArray();
-        foreach (var symbols in arrayOfStrings) 
+        int count = currentLine.Count(c => c.ToString() == symbol); // подсчет количества символов в оставшиеся 2 строках 
+        if (!dictionary.ContainsKey(symbol))
         {
-            foreach (var text in File.ReadLines(filePath).Skip(1))
-            {
-                if (dictionary.ContainsKey(symbols)) 
-                {
-                    dictionary[symbols]++;
-                }
-            }
-        }       
-    }    
+            dictionary[symbol] = new List<int>(); // если не встречался, то добавляем 
+        }
+        dictionary[symbol].Add(count); // тут добавляем количество вхождений в строку, если встртечался
+    }
+}
+foreach (var с in dictionary)
+{
+    Console.WriteLine($"{с.Key}: {string.Join(", ", с.Value)}"); // в таске не обязательно, но я вывел на всякий
+}
+var newFilePath = "forTask " + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".txt"; // надюсь правильно понял про суфикс
+using (StreamWriter writer = new StreamWriter(newFilePath)) // тут уже идет запись в новый файл
+{
+    foreach (var v in dictionary)
+    {
+        writer.WriteLine($"{v.Key}: {string.Join(", ", v.Value)}");
+    }
 }
