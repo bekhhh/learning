@@ -7,12 +7,12 @@ namespace Example_1.Tree
         {
             var words = input.Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToArray();
 
-            return BuildTreeByHighAndLowPriorityOperation(words);
+            return BuildTree(words);
         }
 
-        private ParsingResult BuildTreeByHighAndLowPriorityOperation(string[] words)
+        private ParsingResult BuildTree(string[] words)
         {
-            for (var index = 0; index < words.Length; index++)
+            for (var index = words.Length - 1; index >= 0; index--)
             {
                 var currentWord = words[index];
 
@@ -31,13 +31,13 @@ namespace Example_1.Tree
                 }
 
                 var previousWordsCount = index;
-                var leftPartParsingResult = BuildTreeByHighPriorityOperation(words.Take(previousWordsCount).ToArray());
+                var leftPartParsingResult = BuildTree(words.Take(previousWordsCount).ToArray());
                 if (leftPartParsingResult.IsError)
                 {
                     return leftPartParsingResult;
                 }
 
-                var rightPartParsingResult = BuildTreeByHighAndLowPriorityOperation(words.Skip(previousWordsCount + 1).ToArray());
+                var rightPartParsingResult = BuildTreeByHighPriorityOperation(words.Skip(previousWordsCount + 1).ToArray());
                 if (rightPartParsingResult.IsError)
                 {
                     return rightPartParsingResult;
@@ -65,8 +65,8 @@ namespace Example_1.Tree
                 return ParsingResult.GetBaseFail();
             }
 
-            //Первое слово должно быть числом
-            if (!double.TryParse(words[0], NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
+            //Последнее слово должно быть числом
+            if (!double.TryParse(words[^1], NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
             {
                 return ParsingResult.GetBaseFail();
             }
@@ -80,8 +80,8 @@ namespace Example_1.Tree
                 };
             }
 
-            //Если слов несколько, то первым должно быть число, а вторым операция
-            var operationWord = words[1];
+            //Если слов несколько, то предпоследним словом должна быть операция
+            var operationWord = words[^2];
             Operation operation;
             if (operationWord == "*")
             {
@@ -96,15 +96,16 @@ namespace Example_1.Tree
                 return ParsingResult.GetBaseFail();
             }
 
-            var rightPartParsingResult = BuildTreeByHighPriorityOperation(words.Skip(2).ToArray());
-            if (rightPartParsingResult.IsError)
+            var leftPartWordsCount = words.Length - 2;
+            var leftPartResult = BuildTreeByHighPriorityOperation(words.Take(leftPartWordsCount).ToArray());
+            if (leftPartResult.IsError)
             {
-                //Если ошибка в парсинге правой части, то возвращем эту же ошибку вверх.
-                return rightPartParsingResult;
+                //Если ошибка в парсинге левой части, то возвращем эту же ошибку вверх.
+                return leftPartResult;
             }
 
-            var leftTree = Tree.GetSimple(number);
-            var rightTree = rightPartParsingResult.Tree;
+            var rightTree = Tree.GetSimple(number);
+            var leftTree = leftPartResult.Tree;
 
             return new ParsingResult
             {
