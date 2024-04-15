@@ -1,8 +1,11 @@
-﻿namespace _3
+﻿namespace Task3
 {
-    public abstract class ConsoleWriter
-    {
-        public abstract string Prefix { get; set; }       
-        public abstract void Write(string value);      
+    public interface IConsoleWriter
+    {        
+        public string Prefix { get; init; }
+        public void Write(string text) 
+        {
+            Console.WriteLine(text);
+        }     
     }
 }
