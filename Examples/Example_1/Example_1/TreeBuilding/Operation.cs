@@ -1,4 +1,4 @@
-﻿namespace Example_1.Tree
+﻿namespace Example_1.TreeBuilding
 {
     public enum Operation
     {

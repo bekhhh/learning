@@ -1,4 +1,4 @@
-﻿using Example_1.Tree;
+﻿using Example_1.TreeBuilding;
 Console.WriteLine("Введите выражение, используя символы * / + - и целые или дробные числа (отрицательные тоже)");
 
 while (true)
@@ -22,7 +22,7 @@ while (true)
 
     if (result.IsError)
     {
-        Console.WriteLine("Выражение написано не корректно");
+        Console.WriteLine(result.ErrorMessage);
         Console.WriteLine("Введите выражение, используя символы * / + - и целые или дробные числа (отрицательные тоже)");
         continue;
     }
