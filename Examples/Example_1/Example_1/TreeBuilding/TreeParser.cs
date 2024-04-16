@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-namespace Example_1.Tree
+namespace Example_1.TreeBuilding
 {
     public class TreeParser
     {
@@ -45,12 +45,7 @@ namespace Example_1.Tree
 
                 return new ParsingResult
                 {
-                    Tree = new Tree
-                    {
-                        Left = leftPartParsingResult.Tree,
-                        Right = rightPartParsingResult.Tree,
-                        Operation = operation,
-                    }
+                    Tree = new Tree(operation, leftPartParsingResult.Tree, rightPartParsingResult.Tree)
                 };
             }
 
@@ -76,7 +71,7 @@ namespace Example_1.Tree
             {
                 return new ParsingResult
                 {
-                    Tree = Tree.GetSimple(number)
+                    Tree = new Tree(number)
                 };
             }
 
@@ -90,6 +85,14 @@ namespace Example_1.Tree
             else if (operationWord == "/")
             {
                 operation = Operation.Divide;
+                if (number == 0)
+                {
+                    return new ParsingResult
+                    {
+                        IsError = true,
+                        ErrorMessage = "Делить на ноль нельзя",
+                    };
+                }
             }
             else
             {
@@ -104,17 +107,12 @@ namespace Example_1.Tree
                 return leftPartResult;
             }
 
-            var rightTree = Tree.GetSimple(number);
+            var rightTree = new Tree(number);
             var leftTree = leftPartResult.Tree;
 
             return new ParsingResult
             {
-                Tree = new Tree
-                {
-                    Left = leftTree,
-                    Right = rightTree,
-                    Operation = operation,
-                }
+                Tree = new Tree(operation, leftTree, rightTree)
             };
         }
     }

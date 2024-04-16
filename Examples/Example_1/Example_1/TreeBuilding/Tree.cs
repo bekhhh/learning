@@ -1,12 +1,24 @@
-﻿namespace Example_1.Tree
+﻿namespace Example_1.TreeBuilding
 {
     public class Tree
     {
         public Tree? Left { get; init; }
         public Tree? Right { get; init; }
-        
-        public double Number { get; init; }
         public Operation Operation { get; init; }
+        public double Number { get; init; }
+
+        public Tree(double number)
+        {
+            Operation = Operation.None;
+            Number = number;
+        }
+        
+        public Tree(Operation operation, Tree left, Tree right)
+        {
+            Operation = operation;
+            Left = left;
+            Right = right;
+        }
 
         public double GetResult()
         {
@@ -25,11 +37,5 @@
                 default: throw new ArgumentOutOfRangeException();
             }
         }
-
-        public static Tree GetSimple(double number) => new()
-        {
-            Number = number,
-            Operation = Operation.None,
-        };
     }
 }
