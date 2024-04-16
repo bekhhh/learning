@@ -1,4 +1,4 @@
-﻿namespace Task10
+﻿namespace Task9
 {
     public abstract class Сharacteristic
     {

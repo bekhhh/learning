@@ -1,10 +1,16 @@
-﻿namespace Task10.Сharacters
+﻿namespace Task9.Сharacters
 {
-    public class Druid : Сharacteristic
+    public class Warrior : Сharacteristic
     {
-        public bool ForestArmor { get; set; }
-        public int Hearing { get; set; }
-        public string Summoner { get; set; }
+        public enum WeaponState
+        {
+            Bad,
+            Normal,
+            Good
+        }
+        public WeaponState State { get; set; }
+        public string Rage { get; set; }
+        public string Helmet { get; set; }
         public override StartItems[] CharacterStartItems => new StartItems[]
         {
          StartItems.Boots,
@@ -19,11 +25,11 @@
 
         public override void PrintСharacteristic()
         {
-            Console.WriteLine($"ForestArmor, Hearing, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
+            Console.WriteLine($"State, Rage, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
         }
         public override void PrintItems()
         {
-            Console.WriteLine($"Summoner, Boots, Cloak, HealingPotion");
+            Console.WriteLine($"Helmet, Boots, Cloak, HealingPotion");
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Task10.Сharacters;
+﻿using Task9.Сharacters;
 
-namespace Task10
+namespace Task9
 {
-    public class HandleInput
+    public class InputHandler
     {       
         public void HandlerInput()
         {

@@ -1,16 +1,10 @@
-﻿namespace Task10.Сharacters
+﻿namespace Task9.Сharacters
 {
-    public class Warrior : Сharacteristic
+    public class Wizard : Сharacteristic
     {
-        public enum WeaponState
-        {
-            Bad,
-            Normal,
-            Good
-        }
-        public WeaponState State { get; set; }
-        public string Rage { get; set; }
-        public string Helmet { get; set; }
+        public int Mana { get; set; }
+        public int MagicResistance { get; set; }
+        public int Staff { get; set; }
         public override StartItems[] CharacterStartItems => new StartItems[]
         {
          StartItems.Boots,
@@ -25,11 +19,11 @@
 
         public override void PrintСharacteristic()
         {
-            Console.WriteLine($"State, Rage, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
+            Console.WriteLine($"Mana, MagicResistance, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
         }
         public override void PrintItems()
         {
-            Console.WriteLine($"Helmet, Boots, Cloak, HealingPotion");
+            Console.WriteLine($"Staff, Boots, Cloak, HealingPotion");
         }
     }
 }

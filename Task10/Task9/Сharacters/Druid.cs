@@ -1,10 +1,10 @@
-﻿namespace Task10.Сharacters
+﻿namespace Task9.Сharacters
 {
-    public class Wizard : Сharacteristic
+    public class Druid : Сharacteristic
     {
-        public int Mana { get; set; }
-        public int MagicResistance { get; set; }
-        public int Staff { get; set; }
+        public bool ForestArmor { get; set; }
+        public int Hearing { get; set; }
+        public string Summoner { get; set; }
         public override StartItems[] CharacterStartItems => new StartItems[]
         {
          StartItems.Boots,
@@ -19,11 +19,11 @@
 
         public override void PrintСharacteristic()
         {
-            Console.WriteLine($"Mana, MagicResistance, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
+            Console.WriteLine($"ForestArmor, Hearing, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
         }
         public override void PrintItems()
         {
-            Console.WriteLine($"Staff, Boots, Cloak, HealingPotion");
+            Console.WriteLine($"Summoner, Boots, Cloak, HealingPotion");
         }
     }
 }

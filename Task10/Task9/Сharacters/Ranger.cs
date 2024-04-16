@@ -1,10 +1,10 @@
-﻿namespace Task10.Сharacters
+﻿namespace Task9.Сharacters
 {
-    public class Bard : Сharacteristic
+    public class Ranger : Сharacteristic
     {
-        public int Сharisma {get; set;}
-        public string Mood { get; set;}
-        public string Lute { get; set; }
+        public bool isHidden { get; set; }
+        public string RangeAttack { get; set; }
+        public string Bow { get; set; }
         public override StartItems[] CharacterStartItems => new StartItems[]
         {
          StartItems.Boots,
@@ -19,11 +19,11 @@
 
         public override void PrintСharacteristic()
         {
-            Console.WriteLine($"Сharisma, Mood, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
+            Console.WriteLine($"isHidden, RangeAttack, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
         }
         public override void PrintItems()
         {
-            Console.WriteLine($"Lute, Boots, Cloak, HealingPotion");
+            Console.WriteLine($"Bow, Boots, Cloak, HealingPotion");
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using System.Security.Cryptography;
-
-namespace Task10.Сharacters
+﻿namespace Task9.Сharacters
 {
-    public class Cleric : Сharacteristic
+    public class Rogue : Сharacteristic
     {
-        public int Heal { get; set; }
-        public string Jump { get; set; }
-        public string FirstAidKit { get; set; }
+        public bool NightVision { get; set; }
+        public bool Invisibility { get; set; }
+        public string Dagger { get; set; }
         public override StartItems[] CharacterStartItems => new StartItems[]
         {
          StartItems.Boots,
@@ -21,11 +19,11 @@ namespace Task10.Сharacters
 
         public override void PrintСharacteristic()
         {
-            Console.WriteLine($"Heal, Jump, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
+            Console.WriteLine($"NightVision, Invisibility, Health, MovementSpeed, AttackSpeed, Dexterity, Armor ");
         }
         public override void PrintItems()
         {
-            Console.WriteLine($"FirstAidKit, Boots, Cloak, HealingPotion");
+            Console.WriteLine($"Dagger, Boots, Cloak, HealingPotion");
         }
     }
 }
