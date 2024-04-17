@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Diagnostics.Metrics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 var dictionary = new Dictionary<string, List<int>>();
-var filePath = @"C:\Projects\forTask.txt";
+Console.WriteLine("Введите путь к файлу ");
+var filePath = Console.ReadLine(); //C:\Projects\forTask.txt => мой путь к файлу
 if (!File.Exists(filePath)) // проверяем на наличие файла
 {
     Console.WriteLine("Файл не существует");
@@ -32,8 +34,10 @@ foreach (var с in dictionary)
 {
     Console.WriteLine($"{с.Key}: {string.Join(", ", с.Value)}"); // в таске не обязательно, но я вывел на всякий
 }
-var newFilePath = "forTask " + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".txt"; // надюсь правильно понял про суфикс
-using (StreamWriter writer = new StreamWriter(newFilePath)) // тут уже идет запись в новый файл
+var newFilePath = @"C:\Projects";
+var newFile = "forTask " + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".txt"; // надюсь правильно понял про суфикс
+string fullFilePath = Path.Combine(newFilePath, newFile);
+using (StreamWriter writer = new StreamWriter(fullFilePath)) // тут уже идет запись в новый файл
 {
     foreach (var v in dictionary)
     {
