@@ -10,7 +10,7 @@ namespace Task3
         private string Prefix { get; set; } = "info: ";
         public ConsoleColor Color { get; set; } = ConsoleColor.Yellow;
 
-        public void HandleInput()
+        public void StartHandlingInput()
         {
             while (true)
             {
