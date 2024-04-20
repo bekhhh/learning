@@ -8,4 +8,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleWriterLib\ConsoleWriterLib.csproj" />
+    <ProjectReference Include="..\RedModeLib\RedModeLib.csproj" />
+  </ItemGroup>
+
 </Project>

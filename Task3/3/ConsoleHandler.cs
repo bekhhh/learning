@@ -3,15 +3,13 @@ using System.Drawing;
 using System.Xml.Linq;
 
 namespace Task3
-{
+{   
     public class ConsoleHandler
     {
-        public SwitchMode Mode { get; set; }
-        private string Prefix { get; set; } = "info: ";
-        public ConsoleColor Color { get; set; } = ConsoleColor.Yellow;
-
+        private IConsoleWriter _writer;       
         public void StartHandlingInput()
         {
+            _writer.Write();
             while (true)
             {
                 var input = Console.ReadLine();
@@ -20,20 +18,17 @@ namespace Task3
                     Console.WriteLine("Введена пустая строка");
                 }
                 if (input == "switch")
-                {                 
-                    ChangeMode();
+                {                                     
                     Console.WriteLine("Цвет изменен");
+                    if () 
+                    { 
+                    
+                    }
                 }
                 Console.ForegroundColor = Color;
                 Console.WriteLine($"{Prefix}{input}");
                 Console.ResetColor();
             }
-        }
-        private void ChangeMode()
-        {
-            Mode = Mode == SwitchMode.YellowMode ? SwitchMode.RedMode : SwitchMode.YellowMode;
-            Color = Mode == SwitchMode.YellowMode ? ConsoleColor.Yellow : ConsoleColor.Red;
-            Prefix = Mode == SwitchMode.YellowMode ? "info: " : "error: ";
-        }
+        }       
     }
 }
