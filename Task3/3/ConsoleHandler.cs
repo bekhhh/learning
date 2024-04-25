@@ -1,34 +1,32 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Drawing;
-using System.Xml.Linq;
+﻿using Task3;
 
-namespace Task3
-{   
-    public class ConsoleHandler
+public class ConsoleHandler
+{
+    IConsoleWriter writer = new YellowRealization();
+    public void StartHandlingInput()
     {
-        private IConsoleWriter _writer;       
-        public void StartHandlingInput()
+        while (true)
         {
-            _writer.Write();
-            while (true)
+            var input = Console.ReadLine();
+            if (input == "switch")
             {
-                var input = Console.ReadLine();
-                if (string.IsNullOrEmpty(input))
+                if (writer is YellowRealization)
                 {
-                    Console.WriteLine("Введена пустая строка");
+                    writer = new RedRealization();
+                    Console.ForegroundColor = ConsoleColor.Red;
                 }
-                if (input == "switch")
-                {                                     
-                    Console.WriteLine("Цвет изменен");
-                    if () 
-                    { 
-                    
-                    }
+                else
+                {
+                    writer = new YellowRealization();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                 }
-                Console.ForegroundColor = Color;
-                Console.WriteLine($"{Prefix}{input}");
-                Console.ResetColor();
+                Console.WriteLine("Цвет изменен");
             }
-        }       
+            else
+            {
+                string mode = writer.Write(input);
+                Console.WriteLine(mode);
+            }
+        }
     }
 }
