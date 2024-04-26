@@ -16,7 +16,7 @@ var arrayOfSymbols = firstLine.Split(',')
                        .Where(x => !string.IsNullOrEmpty(x))
                        .Select(x => x[0])
                        .ToArray();
-var newFilePath = @"C:\Projects";
+var newFilePath = Path.GetDirectoryName(filePath);
 var newFile = "forTask " + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".txt";
 string fullFilePath = Path.Combine(newFilePath, newFile);
 using (StreamWriter writer = new StreamWriter(fullFilePath)) 
