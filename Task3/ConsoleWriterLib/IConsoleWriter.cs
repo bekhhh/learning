@@ -2,6 +2,6 @@
 {
     public interface IConsoleWriter
     {
-        public string Write(string text);
+        public void Write(string text);       
     }
 }

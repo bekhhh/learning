@@ -2,7 +2,7 @@
 
 public class ConsoleHandler
 {
-    IConsoleWriter writer = new YellowRealization();
+    IConsoleWriter writer = new YellowConsoleWriter();
     public void StartHandlingInput()
     {
         while (true)
@@ -10,22 +10,19 @@ public class ConsoleHandler
             var input = Console.ReadLine();
             if (input == "switch")
             {
-                if (writer is YellowRealization)
+                if (writer is YellowConsoleWriter)
                 {
-                    writer = new RedRealization();
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    writer = new RedConsoleWriter();
                 }
                 else
                 {
-                    writer = new YellowRealization();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    writer = new YellowConsoleWriter();
                 }
                 Console.WriteLine("Цвет изменен");
             }
             else
-            {
-                string mode = writer.Write(input);
-                Console.WriteLine(mode);
+            { 
+            writer.Write(input);
             }
         }
     }

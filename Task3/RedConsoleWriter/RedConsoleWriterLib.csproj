@@ -1,16 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>3</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ConsoleWriterLib\ConsoleWriterLib.csproj" />
-    <ProjectReference Include="..\RedConsoleWriter\RedConsoleWriterLib.csproj" />
   </ItemGroup>
 
 </Project>
