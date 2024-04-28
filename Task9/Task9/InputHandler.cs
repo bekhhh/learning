@@ -3,18 +3,20 @@
 namespace Task9
 {
     public class InputHandler
-    {       
+    {
         public void HandlerInput()
         {
-            var ranger = new Ranger();
-            var cleric = new Cleric();
-            var bard = new Bard();
-            var druid = new Druid();
-            var rogue = new Rogue();
-            var wizard = new Wizard();
-            var warrior = new Warrior();
-
-            Console.WriteLine($"Ranger Cleric Bard Druid Rogue Warrior Wizard");
+            var characters = new Dictionary<string, CharacterProperty>
+            {
+            { nameof(Ranger), new Ranger() },
+            { nameof(Cleric), new Cleric() },
+            { nameof(Bard), new Bard() },
+            { nameof(Druid), new Druid() },
+            { nameof(Rogue), new Rogue() },
+            { nameof(Wizard), new Wizard() },
+            { nameof(Warrior), new Warrior() }
+            };
+            Console.WriteLine(string.Join(" ", characters.Keys));
             Console.WriteLine();
             while (true)
             {
@@ -24,70 +26,43 @@ namespace Task9
                     Console.WriteLine("Введена пустая строка");
                     continue;
                 }
-                var words = input.Split('.', '?', '!', ' ', ';', ':', ',')
+                var words = input.Split(' ')
                 .Select(x => x.Trim())
                 .Where(x => !string.IsNullOrEmpty(x))
                 .ToArray();
-                if (words[0] == "get" && words[1] == "description")
+                if (words[0] == "get")
                 {
-                    switch (words[2])
+                    if (words[1] == "description")
                     {
-                        case "Ranger":
-                            ranger.PrintСharacteristic();
-                            break;
-                        case "Cleric":
-                            cleric.PrintСharacteristic();
-                            break;
-                        case "Bard":
-                            bard.PrintСharacteristic();
-                            break;
-                        case "Druid":
-                            druid.PrintСharacteristic();
-                            break;
-                        case "Rogue":
-                            rogue.PrintСharacteristic();
-                            break;
-                        case "Wizard":
-                            wizard.PrintСharacteristic();
-                            break;
-                        case "Warrior":
-                            warrior.PrintСharacteristic();
-                            break;
+                        if (characters.TryGetValue(words[2].ToLower(), out var character))
+                        {
+                            character.PrintСharacteristic();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Такого персонажа не существует");
+                        }
                     }
-                }
-                else if (words[0] == "get" && words[1] == "items")
-                {
-                    switch (words[2])
+                    else if (words[1] == "items")
                     {
-                        case "Ranger":
-                            ranger.PrintItems();
-                            break;
-                        case "Cleric":
-                            cleric.PrintItems();
-                            break;
-                        case "Bard":
-                            bard.PrintItems();
-                            break;
-                        case "Druid":
-                            druid.PrintItems();
-                            break;
-                        case "Rogue":
-                            rogue.PrintItems();
-                            break;
-                        case "Wizard":
-                            wizard.PrintItems();
-                            break;
-                        case "Warrior":
-                            warrior.PrintItems();
-                            break;
+                        if (characters.TryGetValue(words[2].ToLower(), out var character))
+                        {
+                            character.PrintItems();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Такого персонажа не существует");
+                        }
                     }
+                    Console.WriteLine("Введите description или items");
+                    continue;
                 }
-                else 
+                else
                 {
                     Console.WriteLine("Введены неверные данные");
                     continue;
                 }
-            }           
+            }
         }
     }
 }

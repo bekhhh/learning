@@ -1,21 +1,21 @@
-﻿namespace Task9.Сharacters
+﻿using Task9.Items;
+
+namespace Task9.Сharacters
 {
-    public class Druid : Сharacteristic
+    public class Druid : CharacterProperty,IStartItems
     {
-        public bool ForestArmor { get; set; }
-        public int Hearing { get; set; }
-        public string Summoner { get; set; }
-        public override StartItems[] CharacterStartItems => new StartItems[]
-        {
-         StartItems.Boots,
-         StartItems.Cloak,
-         StartItems.HealingPotion
-        };
-        public override double Health { get; set; }
-        public override int MovementSpeed { get; set; }
-        public override int AttackSpeed { get; set; }
-        public override int Dexterity { get; set; }
-        public override double Armor { get; set; }
+        public bool ForestArmor { get; set; } = false;//если в лесу + армор
+        public int Vision { get; set; } = 10; //хороший слух
+        public string Summoner { get; set; } //имеет саммонера
+        public override object[] PersonalItem => new object[] { Summoner };
+        public string Boots { get; set; }
+        public string Cloak { get; set; }
+        public string HealingPotion { get; set; }
+        public override double Health { get; set; } = 10;
+        public override int MovementSpeed { get; set; } = 5;
+        public override int AttackSpeed { get; set; } = 5;
+        public override int Dexterity { get; set; } = 5;
+        public override double Armor { get; set; } = 10;
 
         public override void PrintСharacteristic()
         {

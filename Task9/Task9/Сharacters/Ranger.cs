@@ -1,21 +1,27 @@
-﻿namespace Task9.Сharacters
+﻿using Task9.Items;
+
+namespace Task9.Сharacters
 {
-    public class Ranger : Сharacteristic
+    public class Ranger : CharacterProperty,IStartItems
     {
-        public bool isHidden { get; set; }
-        public string RangeAttack { get; set; }
-        public string Bow { get; set; }
-        public override StartItems[] CharacterStartItems => new StartItems[]
+        public enum DrawLength // Длина растяжки (натяжения)
         {
-         StartItems.Boots,
-         StartItems.Cloak,
-         StartItems.HealingPotion
-        };
-        public override double Health { get; set; }
-        public override int MovementSpeed { get; set; }
-        public override int AttackSpeed { get; set; }
-        public override int Dexterity { get; set; }
-        public override double Armor { get; set; }
+            Weak,
+            Normal,
+            Strong
+        }
+        public DrawLength Bow { get; set; }
+        public override object[] PersonalItem => new object[] { Bow };
+        public bool isHidden { get; set; } = false; //если да, то + урон
+        public bool RangeAttack { get; set; } = false; //наличие дальной атаки
+        public string Boots { get; set; }
+        public string Cloak { get; set; }
+        public string HealingPotion { get; set; }
+        public override double Health { get; set; } = 10;
+        public override int MovementSpeed { get; set; } = 5;
+        public override int AttackSpeed { get; set; } = 5;
+        public override int Dexterity { get; set; } = 5;
+        public override double Armor { get; set; } = 10;
 
         public override void PrintСharacteristic()
         {
