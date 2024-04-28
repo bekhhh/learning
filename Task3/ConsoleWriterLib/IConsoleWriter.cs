@@ -1,4 +1,4 @@
-﻿namespace Task3
+﻿namespace ConsoleWriterLib
 {
     public interface IConsoleWriter
     {

@@ -1,11 +1,15 @@
-﻿using Task3;
+﻿using ConsoleWriterLib;
 
-public class RedConsoleWriter : IConsoleWriter
+namespace RedConsoleWriterLib
 {
-    public void Write(string text)
+
+    public class RedConsoleWriter : IConsoleWriter
     {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"error: {text}");
-        Console.ResetColor();
+        public void Write(string text)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"error: {text}");
+            Console.ResetColor();
+        }
     }
 }
