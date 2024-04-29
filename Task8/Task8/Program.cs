@@ -1,7 +1,16 @@
 ﻿using System;
 using System.Xml.Linq;
 
-var numbersArray = new List<int>();
+ static int ReverseNumber(int number)
+{
+    int reversedNumber = 0;
+    while (number > 0)
+    {
+        reversedNumber = reversedNumber * 10 + number % 10;
+        number /= 10;
+    }
+    return reversedNumber;
+}
 while (true)
 {
     try
@@ -13,36 +22,32 @@ while (true)
             continue;
         }
         var words = input.Split('.', '?', '!', ' ', ';', ':', ',')
-        .Select(x => x.Trim())
-        .Where(x => !string.IsNullOrEmpty(x))
-        .ToArray();
-        foreach (var word in words)
+            .Select(x => x.Trim())
+            .Where(x => !string.IsNullOrEmpty(x))
+            .ToArray();
+
+        for (int i = 0; i < words.Length; i++)
         {
-            if (!int.TryParse(word, out int numbers))
+            if (!int.TryParse(words[i], out int number))
             {
                 throw new FormatException("Неверный формат строки.");
             }
-            else if (numbers <= 0)
+            else if (number <= 0)
             {
                 throw new ArgumentException("Числа не должны быть меньше или равны к нулю.");
             }
-            numbersArray.Add(numbers);
-            for (int i = 0; i < numbers.Count; i++)
-            {
-                var array1 = words[i];
 
-                if (i % 2 == 0)
-                {
-                    // четный индекс
-                    // обрабатываем массив в обратном порядке
-                }
-                else
-                {
-                    // нечетный индекс
-                    // обрабатываем массив в прямом порядке
-                }
+            if (i % 2 == 0)
+            {
+                var reversedNumber = ReverseNumber(number);
+                Console.Write(reversedNumber + " ");
+            }
+            else
+            {
+                Console.Write(number + " ");
             }
         }
+        Console.WriteLine();
     }
     catch (Exception ex)
     {
