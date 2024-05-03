@@ -6,15 +6,15 @@ namespace Task9
     {
         public void HandlerInput()
         {
-            var characters = new Dictionary<string, CharacterProperty>
+            var characters = new Dictionary<string, Character>
             {
-            { nameof(Ranger), new Ranger() },
-            { nameof(Cleric), new Cleric() },
-            { nameof(Bard), new Bard() },
-            { nameof(Druid), new Druid() },
-            { nameof(Rogue), new Rogue() },
-            { nameof(Wizard), new Wizard() },
-            { nameof(Warrior), new Warrior() }
+               { nameof(Ranger), new Ranger() },
+               { nameof(Cleric), new Cleric() },
+               { nameof(Bard), new Bard() },
+               { nameof(Druid), new Druid() },
+               { nameof(Rogue), new Rogue() },
+               { nameof(Wizard), new Wizard() },
+               { nameof(Warrior), new Warrior() }
             };
             Console.WriteLine(string.Join(" ", characters.Keys));
             Console.WriteLine();
@@ -30,11 +30,16 @@ namespace Task9
                 .Select(x => x.Trim())
                 .Where(x => !string.IsNullOrEmpty(x))
                 .ToArray();
+                if (words.Length != 3)
+                {
+                    Console.WriteLine("Введены неверные данные");
+                    continue;
+                }
                 if (words[0] == "get")
                 {
                     if (words[1] == "description")
                     {
-                        if (characters.TryGetValue(words[2].ToLower(), out var character))
+                        if (characters.TryGetValue(words[2], out var character))
                         {
                             character.PrintСharacteristic();
                         }
@@ -45,7 +50,7 @@ namespace Task9
                     }
                     else if (words[1] == "items")
                     {
-                        if (characters.TryGetValue(words[2].ToLower(), out var character))
+                        if (characters.TryGetValue(words[2], out var character))
                         {
                             character.PrintItems();
                         }
@@ -54,13 +59,6 @@ namespace Task9
                             Console.WriteLine("Такого персонажа не существует");
                         }
                     }
-                    Console.WriteLine("Введите description или items");
-                    continue;
-                }
-                else
-                {
-                    Console.WriteLine("Введены неверные данные");
-                    continue;
                 }
             }
         }
