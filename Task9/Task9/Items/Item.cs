@@ -1,4 +1,4 @@
-﻿namespace Task9
+﻿namespace Task9.Items
 {
     public class Item
     {

@@ -1,4 +1,6 @@
-﻿namespace Task9
+﻿using Task9.Items;
+
+namespace Task9
 {
     public class Character
     {
@@ -13,13 +15,13 @@
         {
             Items = new List<Item>
             {
-                new Item($"Boots, Cloack, HealingPotion")
+                new Item($"{ItemsNames.Boots}, {ItemsNames.HealingPotion}, {ItemsNames.Cloack}")
             };
         }
         public virtual void PrintСharacteristic()
         {
             Console.Write($"{nameof(Health)}, {nameof(MovementSpeed)}, " +
-                $"{nameof(AttackSpeed)}, {nameof(Dexterity)}, {nameof(Armor)}");
+                $"{nameof(AttackSpeed)}, {nameof(Dexterity)}, {nameof(Armor)}, ");
         }
 
         public void PrintItems()

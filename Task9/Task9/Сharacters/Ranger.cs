@@ -1,4 +1,6 @@
-﻿namespace Task9.Сharacters
+﻿using Task9.Items;
+
+namespace Task9.Сharacters
 {
     public class Ranger : Character
     {
@@ -10,7 +12,7 @@
         }
         public DrawLength Bow { get; set; }
         public bool isHidden { get; set; } = false; //если да, то + урон
-        public Item PoisonArrows { get; set; } = new Item("PoisonArrows"); //наличие отравленных стрел
+        public Item PoisonArrows { get; set; } = new Item(ItemsNames.PoisonArrows); //наличие отравленных стрел
 
         public Ranger()
         {

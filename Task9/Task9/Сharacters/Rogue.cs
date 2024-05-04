@@ -1,10 +1,12 @@
-﻿namespace Task9.Сharacters
+﻿using Task9.Items;
+
+namespace Task9.Сharacters
 {
     public class Rogue : Character
     {
         public bool NightVision { get; set; } = false; //видит дадьше, если ночь
         public bool Invisibility { get; set; } = false; //скилл невидимость
-        public Item Dagger { get; set; } = new Item("Dagger"); //наличие клинка + отравление
+        public Item Dagger { get; set; } = new Item(ItemsNames.Dagger); //наличие клинка + отравление
 
         public Rogue()
         {
