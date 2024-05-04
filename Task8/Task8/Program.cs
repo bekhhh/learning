@@ -2,26 +2,31 @@
 {
     try
     {
-        var input = Console.ReadLine();
-        if (string.IsNullOrEmpty(input))
+        var arraysCount = int.Parse(Console.ReadLine());
+        var numbers = new List<int>();
+        for (int i = 0; i < arraysCount; i++)
         {
-            Console.WriteLine("Введена пустая строка");
-        }
-        var numbersArray = input.Split(',')
-            .Select(x => x.Trim())
-            .Where(x => !string.IsNullOrEmpty(x))
-            .ToArray();
-        foreach (var numbers in numbersArray)
-        {
-            if (!int.TryParse(numbers, out var number))
+            var input = Console.ReadLine();
+            if (string.IsNullOrEmpty(input))
             {
-                throw new FormatException("Неверный формат строки");
+                Console.WriteLine("Введена пустая строка");
+                continue;
             }
-            else if (number <= 0)
+            var words = input.Split(',')
+                .Select(x => x.Trim())
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(int.Parse)
+                .ToArray();
+            if (i % 2 == 0)
             {
-                throw new ArgumentException("Числа не должны быть меньше или равны к нулю.");
-            }           
+                numbers.AddRange(words);
+            }
+            else
+            {
+                numbers.AddRange(words.Reverse());
+            }
         }
+        Console.WriteLine(string.Join(", ", numbers));
     }
     catch (Exception ex)
     {
