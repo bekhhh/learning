@@ -1,4 +1,5 @@
-﻿using Task9.Сharacters;
+﻿using Task9;
+using Task9.Сharacters;
 
 namespace Task9
 {
@@ -35,30 +36,23 @@ namespace Task9
                     Console.WriteLine("Введены неверные данные");
                     continue;
                 }
-                if (words[0] == "get")
+                if (words[0] != "get")
                 {
-                    if (words[1] == "description")
-                    {
-                        if (characters.TryGetValue(words[2], out var character))
-                        {
-                            character.PrintСharacteristic();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Такого персонажа не существует");
-                        }
-                    }
-                    else if (words[1] == "items")
-                    {
-                        if (characters.TryGetValue(words[2], out var character))
-                        {
-                            character.PrintItems();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Такого персонажа не существует");
-                        }
-                    }
+                    Console.WriteLine("Введены неверные данные");
+                    continue;
+                }
+                if (!characters.TryGetValue(words[2], out var character))
+                {
+                    Console.WriteLine("Такого персонажа не существует");
+                    continue;
+                }
+                if (words[1] == "items")
+                {
+                    character.PrintItems();
+                }
+                else if (words[1] == "description")
+                {
+                    character.PrintСharacteristic();
                 }
             }
         }

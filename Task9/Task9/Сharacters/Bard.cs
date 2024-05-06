@@ -6,16 +6,11 @@ namespace Task9.Сharacters
     {
         public int Сharisma { get; set; } = 8; //наличие харизмы(может купить по скидке)
         public bool Mood { get; set; } = true; // если тру, то немного хилит        
-        public Item Lute { get; set; } = new Item(ItemsNames.Lute); //+ армор союзникам       
+        public override string[] UniqueCharacteristics => new string[] { nameof(Сharisma), nameof(Mood) };
 
         public Bard()
         {
-            Items.Add(Lute);
-        }
-        public override void PrintСharacteristic()
-        {
-            base.PrintСharacteristic();
-            Console.WriteLine($"{nameof(Сharisma)}, {nameof(Mood)}");
-        }
+            Items.Add(new Item(ItemsNames.Lute));
+        }      
     }
 }

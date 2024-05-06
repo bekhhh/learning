@@ -2,8 +2,9 @@
 
 namespace Task9
 {
-    public class Character
+    public abstract class Character
     {
+        public abstract string[] UniqueCharacteristics { get; }
         public double Health { get; set; } = 10;
         public int MovementSpeed { get; set; } = 5;
         public int AttackSpeed { get; set; } = 5;
@@ -15,22 +16,21 @@ namespace Task9
         {
             Items = new List<Item>
             {
-                new Item($"{ItemsNames.Boots}, {ItemsNames.HealingPotion}, {ItemsNames.Cloack}")
+                new Item(ItemsNames.Boots),
+                new Item(ItemsNames.HealingPotion),
+                new Item(ItemsNames.Cloack)
             };
         }
         public virtual void PrintСharacteristic()
         {
-            Console.Write($"{nameof(Health)}, {nameof(MovementSpeed)}, " +
-                $"{nameof(AttackSpeed)}, {nameof(Dexterity)}, {nameof(Armor)}, ");
+            Console.WriteLine($"{string.Join(", ", UniqueCharacteristics)}, {nameof(Health)}," +
+                $" {nameof(MovementSpeed)}, {nameof(AttackSpeed)}, {nameof(Dexterity)}, {nameof(Armor)}");
+
         }
 
         public void PrintItems()
         {
-            foreach (var item in Items)
-            {
-                Console.WriteLine(string.Join(", ", Items.Select(i => i.Name)));
-                break;
-            }
+            Console.WriteLine(string.Join(", ", Items.Select(i => i.Name)));
         }
     }
 }

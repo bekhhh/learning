@@ -1,27 +1,18 @@
-﻿using Task9.Items;
+﻿using Task9.Characteristics;
+using Task9.Items;
 
 namespace Task9.Сharacters
 {
     public class Ranger : Character
     {
-        public enum DrawLength // Длина растяжки (натяжения)
-        {
-            Weak,
-            Normal,
-            Strong
-        }
         public DrawLength Bow { get; set; }
-        public bool isHidden { get; set; } = false; //если да, то + урон
+        public bool IsHidden { get; set; } = false; //если да, то + урон
         public Item PoisonArrows { get; set; } = new Item(ItemsNames.PoisonArrows); //наличие отравленных стрел
+        public override string[] UniqueCharacteristics => new string[] { nameof(IsHidden), nameof(PoisonArrows) };
 
         public Ranger()
         {
-            Items.Add(PoisonArrows);
-        }
-        public override void PrintСharacteristic()
-        {
-            base.PrintСharacteristic();
-            Console.WriteLine($"{nameof(isHidden)}, {nameof(PoisonArrows)}");
+            Items.Add(new Item(ItemsNames.PoisonArrows));
         }
     }
 }
