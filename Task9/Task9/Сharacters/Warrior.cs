@@ -7,7 +7,6 @@ namespace Task9.Сharacters
     {        
         public WeaponState State { get; set; }
         public int Strenght { get; set; } = 5; //скилл ярость + к урону
-        public Item Helmet { get; set; } = new Item(ItemsNames.Helmet); //шлем, защита от физ урона
         public override string[] UniqueCharacteristics => new string[] { nameof(State), nameof(Strenght) };
 
         public Warrior()

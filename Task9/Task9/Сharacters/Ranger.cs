@@ -7,8 +7,7 @@ namespace Task9.Сharacters
     {
         public DrawLength Bow { get; set; }
         public bool IsHidden { get; set; } = false; //если да, то + урон
-        public Item PoisonArrows { get; set; } = new Item(ItemsNames.PoisonArrows); //наличие отравленных стрел
-        public override string[] UniqueCharacteristics => new string[] { nameof(IsHidden), nameof(PoisonArrows) };
+        public override string[] UniqueCharacteristics => new string[] { nameof(IsHidden), nameof(Bow) };
 
         public Ranger()
         {

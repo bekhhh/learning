@@ -21,7 +21,7 @@ namespace Task9
                 new Item(ItemsNames.Cloack)
             };
         }
-        public virtual void PrintСharacteristic()
+        public void PrintСharacteristic()
         {
             Console.WriteLine($"{string.Join(", ", UniqueCharacteristics)}, {nameof(Health)}," +
                 $" {nameof(MovementSpeed)}, {nameof(AttackSpeed)}, {nameof(Dexterity)}, {nameof(Armor)}");
