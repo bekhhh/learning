@@ -1,4 +1,6 @@
-﻿using Task9.Items;
+﻿using Newtonsoft.Json;
+using System.Xml;
+using Task9.Items;
 
 namespace Task9
 {
@@ -11,7 +13,7 @@ namespace Task9
         public int Dexterity { get; set; } = 5;
         public double Armor { get; set; } = 10;
         public List<Item> Items { get; set; } = new List<Item>();
-
+        
         public Character()
         {
             Items = new List<Item>
@@ -31,6 +33,12 @@ namespace Task9
         public void PrintItems()
         {
             Console.WriteLine(string.Join(", ", Items.Select(i => i.Name)));
+        }
+
+        public void PrintJson()
+        {
+            var json = JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+            Console.WriteLine(json);
         }
     }
 }

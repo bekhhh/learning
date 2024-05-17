@@ -19,6 +19,7 @@ namespace Task9
             };
             Console.WriteLine(string.Join(" ", characters.Keys));
             Console.WriteLine();
+            Character character;
             while (true)
             {
                 var input = Console.ReadLine();
@@ -31,17 +32,21 @@ namespace Task9
                 .Select(x => x.Trim())
                 .Where(x => !string.IsNullOrEmpty(x))
                 .ToArray();
-                if (words.Length != 3)
+                if (words[0] == "start") 
                 {
-                    Console.WriteLine("Введены неверные данные");
-                    continue;
+                    if (characters.TryGetValue(words[1], out character)) 
+                    {
+                        Console.WriteLine($"You choose {words[1]} ");
+                        character.PrintJson();
+                        continue;
+                    }
                 }
                 if (words[0] != "get")
                 {
                     Console.WriteLine("Введены неверные данные");
                     continue;
                 }
-                if (!characters.TryGetValue(words[2], out var character))
+                if (!characters.TryGetValue(words[2], out character))
                 {
                     Console.WriteLine("Такого персонажа не существует");
                     continue;
