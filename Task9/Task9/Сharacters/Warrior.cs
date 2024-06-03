@@ -11,7 +11,7 @@ namespace Task9.Сharacters
 
         public Warrior()
         {
-            Items.Add(new Item(ItemsNames.Helmet));
+            Items.Add(new Item(ItemsNames.Helmet, "+3 к броне"));
         }
     }
 }

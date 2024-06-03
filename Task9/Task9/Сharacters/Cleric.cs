@@ -10,7 +10,7 @@ namespace Task9.Сharacters
 
         public Cleric()
         {
-            Items.Add(new Item(ItemsNames.FirstAidKit));
+            Items.Add(new Item(ItemsNames.FirstAidKit, "Восстанавливает 30 единиц здоровья"));
         }
     }
 }
