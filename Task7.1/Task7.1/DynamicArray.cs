@@ -16,7 +16,7 @@ namespace Task7._1
             Lenght = array.Length;
         }
 
-        private void AddToEnd(T value)
+        public void AddToEnd(T value)
         {
             if (array == null)
             {
@@ -33,7 +33,7 @@ namespace Task7._1
             _currentIndex++;
         }
 
-        private void RemoveElement(int index)
+        public void RemoveElement(int index)
         {
             if (index < 0 || index >= array.Length)
             {
@@ -43,7 +43,7 @@ namespace Task7._1
             array[index] = default;
         }
 
-        private T GetByIndex(int index)
+        public T GetByIndex(int index)
         {
             if (index < 0 || index >= _size)
             {
