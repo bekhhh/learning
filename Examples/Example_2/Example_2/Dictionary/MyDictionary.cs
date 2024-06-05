@@ -5,9 +5,14 @@ namespace Example_2.Dictionary
     {
         private List<(TKey, TValue)>[] _buckets;
         private const int BucketSize = 3;
+        private int _count;
+        
+        public int Count => _count;
 
         public MyDictionary()
         {
+            _count = 0;
+
             _buckets = new[]
             {
                 new List<(TKey, TValue)>(), new List<(TKey, TValue)>()
@@ -18,6 +23,7 @@ namespace Example_2.Dictionary
         {
             var index = GetIndex(key);
             _buckets[index].Add((key, value));
+            _count++;
 
             if (_buckets[index].Count > BucketSize)
             {
@@ -47,6 +53,7 @@ namespace Example_2.Dictionary
             }
 
             _buckets[index].Remove(pair);
+            _count--;
         }
 
         private int GetIndex(TKey key)
