@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace Task7._1
 {
-    public class DynamicArray<T>
+    public class DynamicArray<Y>
     {
-        private T[] _array;
+        private Y[] _array;
         private int _size;
         private int _currentIndex;
         public int Length { get; set; }
@@ -13,18 +13,22 @@ namespace Task7._1
         public DynamicArray()
         {
             _size = 1;
-            _array = new T[_size];
+            _array = new Y[_size];
             Length = 0;
         }
 
-        public void AddToEnd(T value)
+        public void AddToEnd(Y value)
         {
             if (_currentIndex == _array.Length)
             {
-                T[] newArray = new T[_array.Length * 2];
+                Y[] newArray = new Y[_array.Length * 2];
                 Array.Copy(_array, newArray, _array.Length);
                 _array = newArray;
                 _size = _array.Length;
+            }
+            if (value == null ) 
+            { 
+            throw new ArgumentNullException("Нельзя передавать null");
             }
             _array[_currentIndex] = value;
             _currentIndex++;
@@ -46,12 +50,12 @@ namespace Task7._1
             Length--;
         }
 
-        public T GetByIndex(int index)
+        public Y GetByIndex(int index)
         {
             if (index < 0 || index >= _currentIndex)
             {
                 throw new IndexOutOfRangeException("Индекс выходит за пределы диапазона");
-            }
+            }           
             return _array[index];
         }
     }
