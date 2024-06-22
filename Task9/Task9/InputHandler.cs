@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Linq.Expressions;
-using Task9;
 using Task9.Сharacters;
+using Task9.Сharacters.Ability;
 
 namespace Task9
 {
@@ -11,13 +11,13 @@ namespace Task9
         {
             var characters = new Dictionary<string, Character>
         {
-           { nameof(Ranger), new Ranger() },
-           { nameof(Cleric), new Cleric() },
-           { nameof(Bard), new Bard() },
-           { nameof(Druid), new Druid() },
-           { nameof(Rogue), new Rogue() },
-           { nameof(Wizard), new Wizard() },
-           { nameof(Warrior), new Warrior() }
+            { nameof(Ranger), new Ranger() },
+            { nameof(Cleric), new Cleric() },
+            { nameof(Bard), new Bard() },
+            { nameof(Druid), new Druid() },
+            { nameof(Rogue), new Rogue() },
+            { nameof(Wizard), new Wizard() },
+            { nameof(Warrior), new Warrior() }
         };
             Console.WriteLine(string.Join(" ", characters.Keys));
             Console.WriteLine();
@@ -76,12 +76,12 @@ namespace Task9
                     {
                         if (words[0] == "add" && words[1] == "ability")
                         {
-                            if (!Enum.TryParse(words[5], out Elements elements))
+                            if (!Enum.TryParse(words[5], out Element element))
                             {
                                 Console.WriteLine("Введены неверные данные");
                                 continue;
                             }
-                            var ability = new Ability(words[2], words[3], int.Parse(words[4]), elements);
+                            var ability = new Ability(words[2], words[3], int.Parse(words[4]), element);
                             character.Abilities.Add(ability);
                             Console.WriteLine($"Добавлена способность {ability.Name}");
                             continue;

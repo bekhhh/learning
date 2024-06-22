@@ -1,17 +1,17 @@
-﻿namespace Task9
+﻿namespace Task9.Сharacters.Ability
 {
     public class Ability
     {
         public string Name { get; }
         public string Description { get; set; }
         public int Mana { get; set; }
-        public Elements Elements { get; set; }
-        public Ability(string name, string description, int mana, Elements elements)
+        public Element Element { get; set; }
+        public Ability(string name, string description, int mana, Element element)
         {
             Name = name;
             Description = description;
             Mana = mana;
-            Elements = elements;
+            Element = element;
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Task9
+﻿namespace Task9.Сharacters.Ability
 {
-    public enum Elements
+    public enum Element
     {
         Earth,
         Fire,
