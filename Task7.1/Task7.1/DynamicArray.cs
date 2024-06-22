@@ -26,6 +26,10 @@ namespace Task7._1
                 _array = newArray;
                 _size = _array.Length;
             }
+            if (value == null)
+            {
+                throw new ArgumentNullException("Нельзя передавать null");
+            }
             _array[_currentIndex] = value;
             _currentIndex++;
             Length++;
