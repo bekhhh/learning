@@ -140,7 +140,7 @@ namespace DynamicArrayTest
         [InlineData(1, 2, 3)]
         [InlineData(34, 4, 5)]
         [InlineData(423, 456, 6)]       
-        public void Add_To_End_Adds_Elements_To_End_Of_Array(int value1, int value2, int value3)
+        public void Adds_Numbers_To_End_Of_Array(int value1, int value2, int value3)
         {
             // Arrange
             var dynamicArray = new DynamicArray<int>();
@@ -155,6 +155,27 @@ namespace DynamicArrayTest
             Assert.Equal(value2, dynamicArray.GetByIndex(1));
             Assert.Equal(value3, dynamicArray.GetByIndex(2));
             Assert.Equal(3, dynamicArray.Length);
-        }      
+        }
+
+        [Theory]
+        [InlineData("Dimas", "Vlados", "Makson")]
+        [InlineData("Lavka", "Samokat", "Eda")]
+        [InlineData("Artorius", "Nadya", "Gloomhaven")]
+        public void Adds_Words_To_End_Of_Array(string value1, string value2, string value3)
+        {
+            // Arrange
+            var dynamicArray = new DynamicArray<string>();
+
+            // Act
+            dynamicArray.AddToEnd(value1);
+            dynamicArray.AddToEnd(value2);
+            dynamicArray.AddToEnd(value3);
+
+            // Assert
+            Assert.Equal(value1, dynamicArray.GetByIndex(0));
+            Assert.Equal(value2, dynamicArray.GetByIndex(1));
+            Assert.Equal(value3, dynamicArray.GetByIndex(2));
+            Assert.Equal(3, dynamicArray.Length);
+        }
     }
 }
