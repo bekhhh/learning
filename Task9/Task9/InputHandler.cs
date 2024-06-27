@@ -88,7 +88,7 @@ namespace Task9
                         }
                         if (words[0] == "show" && words[1] == "info")
                         {
-                            character.PrintInfo();
+                            character.PrintJson();
                             continue;
                         }
                         else

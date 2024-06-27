@@ -14,8 +14,7 @@ namespace Task9
         public int AttackSpeed { get; set; } = 5;
         public int Dexterity { get; set; } = 5;
         public double Armor { get; set; } = 10;
-        public List<Item> Items { get; set; } = new List<Item>();
-        [JsonIgnore]
+        public List<Item> Items { get; set; } = new List<Item>();        
         public List<Ability> Abilities { get; set; } = new List<Ability>();
 
         public Character()
@@ -43,13 +42,13 @@ namespace Task9
             Console.WriteLine(JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented));
         }
 
-        public void PrintInfo() 
+       /* public void PrintInfo() 
         {
             var json = JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
             var abilitiesJson = JsonConvert.SerializeObject(Abilities, Newtonsoft.Json.Formatting.Indented);
             Console.WriteLine(json);
             Console.WriteLine("Abilities:");
             Console.WriteLine(abilitiesJson);
-        }
+        }*/
     }
 }
