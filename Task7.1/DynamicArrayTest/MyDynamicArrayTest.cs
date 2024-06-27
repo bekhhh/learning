@@ -52,17 +52,7 @@ namespace DynamicArrayTest
 
             //Assert
             Assert.Equal(7, dynamicArray.Length);
-        }
-
-        [Fact]
-        public void AddToEnd_Null() 
-        { 
-            //Arrange
-            var dynamicArray = new DynamicArray<string>();
-
-            //Assert
-            Assert.Throws<ArgumentNullException>(() => dynamicArray.AddToEnd(null));
-        }
+        }       
 
         [Fact]
         public void Add_Element_RemoveElement_Check_Array_Lenght() 
@@ -77,6 +67,7 @@ namespace DynamicArrayTest
 
             //Assert
             Assert.Equal(1, dynamicArray.Length);
+            Assert.Equal(3, dynamicArray.GetByIndex(0));
         }
 
         [Fact]
@@ -154,6 +145,33 @@ namespace DynamicArrayTest
             Assert.Equal(value1, dynamicArray.GetByIndex(0));
             Assert.Equal(value2, dynamicArray.GetByIndex(1));
             Assert.Equal(value3, dynamicArray.GetByIndex(2));
+            Assert.Equal(3, dynamicArray.Length);
+        }
+
+        [Theory]
+        [InlineData(1, 2, 3, 63, 5642)]
+        [InlineData(34, 4, 5, 654, 976)]
+        [InlineData(423, 456, 6, 123, 6534)]
+        [InlineData(312, 5643, 12, 6754, 90867)]
+        [InlineData(653, 6256, 756, 2134, 1235)]
+        public void Adds_And_Remove_Numbers_In_Array(int value1, int value2, int value3, int value4, int value5)
+        {
+            // Arrange
+            var dynamicArray = new DynamicArray<int>();
+
+            // Act
+            dynamicArray.AddToEnd(value1);
+            dynamicArray.AddToEnd(value2);
+            dynamicArray.AddToEnd(value3);
+            dynamicArray.AddToEnd(value4);
+            dynamicArray.AddToEnd(value5);
+            dynamicArray.RemoveElement(1);
+            dynamicArray.RemoveElement(3);
+
+            // Assert
+            Assert.Equal(value1, dynamicArray.GetByIndex(0));
+            Assert.Equal(value3, dynamicArray.GetByIndex(1));   
+            Assert.Equal(value4, dynamicArray.GetByIndex(2));
             Assert.Equal(3, dynamicArray.Length);
         }
 
