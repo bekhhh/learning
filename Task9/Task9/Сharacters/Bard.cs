@@ -10,7 +10,7 @@ namespace Task9.Сharacters
 
         public Bard()
         {
-            Items.Add(new Item(ItemsNames.Lute));
+            Items.Add(new Item(ItemsNames.Lute, "+5 к харизме"));
         }      
     }
 }

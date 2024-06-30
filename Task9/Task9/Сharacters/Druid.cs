@@ -10,7 +10,7 @@ namespace Task9.Сharacters
 
         public Druid()
         {
-            Items.Add(new Item(ItemsNames.Summoner));
+            Items.Add(new Item(ItemsNames.Summoner, "Увеличивает обзор на 50 ночью"));
         }
     }
 }

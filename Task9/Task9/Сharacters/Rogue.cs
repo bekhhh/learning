@@ -10,7 +10,7 @@ namespace Task9.Сharacters
 
         public Rogue()
         {
-            Items.Add(new Item(ItemsNames.Dagger));
+            Items.Add(new Item(ItemsNames.Dagger, "+20 к урону"));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Task9.Сharacters
 
         public Ranger()
         {
-            Items.Add(new Item(ItemsNames.PoisonArrows));
+            Items.Add(new Item(ItemsNames.PoisonArrows, "+10 к урону"));
         }
     }
 }
