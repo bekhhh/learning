@@ -41,14 +41,5 @@ namespace Task9
         {           
             Console.WriteLine(JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented));
         }
-
-       /* public void PrintInfo() 
-        {
-            var json = JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
-            var abilitiesJson = JsonConvert.SerializeObject(Abilities, Newtonsoft.Json.Formatting.Indented);
-            Console.WriteLine(json);
-            Console.WriteLine("Abilities:");
-            Console.WriteLine(abilitiesJson);
-        }*/
     }
 }
