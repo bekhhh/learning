@@ -19,7 +19,7 @@ namespace Task9.UserInput.CommandParsing
                { nameof(Warrior), new Warrior() }
             };
             Character? character = null;
-            bool hasStarted = false;           
+            bool hasStarted = false;
             if (string.IsNullOrEmpty(input))
             {
                 return new CommandParsingResult(Command.InvalidInput,
@@ -55,7 +55,7 @@ namespace Task9.UserInput.CommandParsing
                     return new CommandParsingResult(Command.GetDescription);
                 }
             }
-            if (words[0] == "start")
+            else if (words[0] == "start")
             {
                 if (words.Length != 2)
                 {
@@ -74,28 +74,28 @@ namespace Task9.UserInput.CommandParsing
                 }
                 return new CommandParsingResult(Command.Start);
             }
-            if (words[0] == "show")
+            else if (words[0] == "show")
             {
                 if (words.Length != 2)
                 {
                     return new CommandParsingResult(Command.InvalidInput,
                     "Команда show состоит из 2 слов, введите команду в нужном формате.");
                 }
-                if (words[1] != "info") 
+                if (words[1] != "info")
                 {
                     return new CommandParsingResult(Command.InvalidInput,
                     "Не удалось распознать команду info (второе слово)");
                 }
                 return new CommandParsingResult(Command.ShowInfo);
             }
-            if (words[0] == "add") 
+            else if (words[0] == "add")
             {
                 if (words.Length != 5)
                 {
                     return new CommandParsingResult(Command.InvalidInput,
                     "Команда add состоит из 5 слов, введите команду в нужном формате.");
                 }
-                if (words[1] != "ability") 
+                if (words[1] != "ability")
                 {
                     return new CommandParsingResult(Command.InvalidInput,
                     "Не удалось распознать команду ability (второе слово)");
@@ -105,12 +105,12 @@ namespace Task9.UserInput.CommandParsing
                     return new CommandParsingResult(Command.InvalidInput,
                     "Имя способности должно содержать только буквы латинского или кириллического алфавита. Выберете другое имя для способности");
                 }
-                if (!int.TryParse(words[3], out var manaCost)) 
+                if (!int.TryParse(words[3], out var manaCost))
                 {
                     return new CommandParsingResult(Command.InvalidInput,
-                    "В команде add ability на 4 позиции должно быть число, указывающее стоимость в мане."); 
+                    "В команде add ability на 4 позиции должно быть число, указывающее стоимость в мане.");
                 }
-                if (!Enum.TryParse<Element>(words[4], out var element)) 
+                if (!Enum.TryParse<Element>(words[4], out var element))
                 {
                     return new CommandParsingResult(Command.InvalidInput,
                     "В команде add ability на 5 позиции должно быть слово одной из стихии: Earth, Fire, Water, Air.");
@@ -118,7 +118,7 @@ namespace Task9.UserInput.CommandParsing
                 var ability = new Ability(words[2], words[3], manaCost, element);
                 return new CommandParsingResult(Command.AddAbility, ability: ability);
             }
-            return new CommandParsingResult(Command.InvalidInput, 
+            return new CommandParsingResult(Command.InvalidInput,
             "Не удалось распознать команду (первое слово). Введите команду из инструкции.");
         }
     }

@@ -8,7 +8,7 @@ namespace Task9.UserInput
 {
     public class InputHandler
     {
-        public Character Character { get; set; }
+        public Character Character { get; set; } = null;
         public CommandParser Parser { get; set; }
         public InputHandler()
         {
