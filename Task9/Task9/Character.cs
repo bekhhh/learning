@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Xml;
 using Task9.Items;
+using Task9.Сharacters;
 using Task9.Сharacters.Ability;
 
 namespace Task9
@@ -25,7 +26,7 @@ namespace Task9
                 new Item(ItemsNames.HealingPotion, "Восстанавливает 50 единиц здоровья"),
                 new Item(ItemsNames.Cloack, "+1 к броне")
             };
-        }
+        }       
         public void PrintСharacteristic()
         {
             Console.WriteLine($"{string.Join(", ", UniqueCharacteristics)}, {nameof(Health)}," +

@@ -1,18 +1,17 @@
-﻿using Newtonsoft.Json;
-using System.Linq.Expressions;
+﻿using System.Threading.Channels;
 using Task9.UserInput.CommandParsing;
 using Task9.Сharacters;
-using Task9.Сharacters.Ability;
 
 namespace Task9.UserInput
 {
     public class InputHandler
     {
-        public Character Character { get; set; } = null;
+        public Character Character { get; set; } 
         public CommandParser Parser { get; set; }
         public InputHandler()
         {
             Parser = new CommandParser();
+            Character = new Bard();
         }
         public void HandlerInput()
         {
@@ -24,14 +23,26 @@ namespace Task9.UserInput
             {
                 try
                 {
-                    var input = Console.ReadLine();                    
+                    var input = Console.ReadLine();
                     var result = Parser.Parse(input);
-                    switch (result.Command) 
+                    switch (result.Command)
                     {
-                        case Command.InvalidInput: Console.WriteLine(result.Message); continue;
-                        case Command.GetItems: Character.PrintItems(); continue;
-                        case Command.GetDescription: Character.PrintСharacteristic(); continue;
-                        case Command.Start: Character.PrintJson(); Console.WriteLine(InputInstructions.AfterStartRules); continue;
+                        case Command.InvalidInput:
+                            Console.WriteLine(result.Message);
+                            continue;
+                        case Command.GetItems:
+                            Character.PrintItems();
+                            continue;
+                        case Command.GetDescription:
+                            Character.PrintСharacteristic();
+                            continue;
+                        case Command.Start:
+                            Character.PrintJson(); 
+                            Console.WriteLine(InputInstructions.AfterStartRules);
+                            continue;
+                        case Command.ShowInfo:
+                            Character.PrintJson();
+                            continue;
                         case Command.AddAbility:
                             Character.Abilities.Add(result.Ability);
                             Console.WriteLine($"Способность {result.Ability.Name} добавлена.");
