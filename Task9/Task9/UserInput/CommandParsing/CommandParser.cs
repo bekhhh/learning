@@ -6,6 +6,7 @@ namespace Task9.UserInput.CommandParsing
 {
     public class CommandParser
     {
+        public Character? character;
         private bool hasStarted = false;
         public CommandParsingResult Parse(string input)
         {
@@ -18,9 +19,7 @@ namespace Task9.UserInput.CommandParsing
                { nameof(Rogue), new Rogue() },
                { nameof(Wizard), new Wizard() },
                { nameof(Warrior), new Warrior() }
-            };
-            Character? character;
-            
+            };                       
             if (string.IsNullOrEmpty(input))
             {
                 return new CommandParsingResult(Command.InvalidInput,
