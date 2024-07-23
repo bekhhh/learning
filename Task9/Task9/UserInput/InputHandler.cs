@@ -23,33 +23,35 @@ namespace Task9.UserInput
                 {
                     var input = Console.ReadLine();
                     var result = Parser.Parse(input);
+                    Character? character = result.Character; 
+
                     switch (result.Command)
                     {
                         case Command.InvalidInput:
                             Console.WriteLine(result.Message);
                             continue;
                         case Command.GetItems:
-                            Parser.character.PrintItems();
+                            character.PrintItems(); 
                             continue;
                         case Command.GetDescription:
-                            Parser.character.PrintСharacteristic();
+                            character.PrintСharacteristic(); 
                             continue;
                         case Command.Start:
-                            Parser.character.PrintJson(); 
+                            character.PrintJson(); 
                             Console.WriteLine(InputInstructions.AfterStartRules);
                             continue;
                         case Command.ShowInfo:
-                            Parser.character.PrintJson();
+                            character.PrintJson(); 
                             continue;
-                        case Command.AddAbility:
-                            Parser.character.Abilities.Add(result.Ability);
-                            Console.WriteLine($"Способность {result.Ability.Name} добавлена.");
+                        case Command.AddAbility:                            
+                                character.Abilities.Add(result.Ability);
+                                Console.WriteLine($"Способность {result.Ability.Name} добавлена.");                            
                             continue;
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
