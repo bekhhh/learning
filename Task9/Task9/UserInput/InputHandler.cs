@@ -13,17 +13,19 @@ namespace Task9.UserInput
         }
         public void HandlerInput()
         {
-            Console.WriteLine(CharactersList.PrintCharacters);
-            Console.WriteLine();
-            Console.WriteLine(InputInstructions.StartRules);
-            Console.WriteLine();
+            Console.WriteLine(CharactersList.PrintCharacters, Environment.NewLine);
+            Console.WriteLine(InputInstructions.StartRules, Environment.NewLine);
+            Character? character = null;
             while (true)
             {
                 try
                 {
                     var input = Console.ReadLine();
                     var result = Parser.Parse(input);
-                    Character? character = result.Character; 
+                    if (result.Character is not null) 
+                    {
+                        character = result.Character;
+                    }                    
 
                     switch (result.Command)
                     {

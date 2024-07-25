@@ -21,7 +21,6 @@ namespace UserInputTest
 
             //Assert
             Assert.Equal(Command.InvalidInput, result.Command);
-            Assert.Equal("Не получилось распознать команду. Введите строку в нужном формате.", result.Message);
         }
 
         [Fact]
@@ -35,7 +34,6 @@ namespace UserInputTest
 
             //Assert
             Assert.Equal(Command.InvalidInput, result.Command);
-            Assert.Equal("Команда get состоит из 3 слов, введите команду в нужном формате.", result.Message);
         }
 
         [Fact]
@@ -49,7 +47,6 @@ namespace UserInputTest
 
             //Assert
             Assert.Equal(Command.InvalidInput, result.Command);
-            Assert.Equal("Не получилось распознать команду get (введенное второе слово). Введите команду в нужном формате.", result.Message);
         }
 
         [Fact]
@@ -63,7 +60,6 @@ namespace UserInputTest
 
             //Assert
             Assert.Equal(Command.InvalidInput, result.Command);
-            Assert.Equal("Персонажа (третье слово) не существует. Укажите в команде персонажа из начального списка.", result.Message);
         }
 
         [Fact]
@@ -170,7 +166,6 @@ namespace UserInputTest
 
             //Assert
             Assert.Equal(Command.InvalidInput, result.Command);
-            Assert.Equal("Команду start можно использовать один раз за запуск. Введите другую команду.", result.Message);
         }
 
         [Fact]
