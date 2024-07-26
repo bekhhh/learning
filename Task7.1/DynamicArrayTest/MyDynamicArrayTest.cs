@@ -1,5 +1,4 @@
 using NPOI.SS.Formula.Functions;
-using System;
 using Task7._1;
 
 namespace DynamicArrayTest
@@ -193,6 +192,27 @@ namespace DynamicArrayTest
             Assert.Equal(value1, dynamicArray.GetByIndex(0));
             Assert.Equal(value2, dynamicArray.GetByIndex(1));
             Assert.Equal(value3, dynamicArray.GetByIndex(2));
+            Assert.Equal(3, dynamicArray.Length);
+        }
+
+        [Fact]
+        public void Enumerate_Items_Success()
+        {
+            //Arrange
+            var dynamicArray = new DynamicArray<int>();
+            dynamicArray.AddToEnd(5);
+            dynamicArray.AddToEnd(3);
+            dynamicArray.AddToEnd(7);
+            var list = new MyLinkedArray<int>(dynamicArray);
+            var index = 0;
+
+            //Act
+            //Assert
+            foreach (var item in list)
+            {
+                Assert.Equal(dynamicArray[index], item);
+                index++;
+            }
             Assert.Equal(3, dynamicArray.Length);
         }
     }

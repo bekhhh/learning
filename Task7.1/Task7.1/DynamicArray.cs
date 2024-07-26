@@ -49,9 +49,21 @@ namespace Task7._1
         {
             if (index < 0 || index >= _currentIndex)
             {
-                throw new IndexOutOfRangeException("Индекс выходит за пределы диапазона123");
+                throw new IndexOutOfRangeException("Индекс выходит за пределы диапазона");
             }
             return _array[index];
+        }
+
+        public T this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= _currentIndex)
+                {
+                    throw new IndexOutOfRangeException("Индекс выходит за пределы диапазона");
+                }
+                return _array[index];
+            }
         }
     }
 }
