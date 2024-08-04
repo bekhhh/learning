@@ -115,6 +115,19 @@ namespace UserInputTest
         }
 
         [Fact]
+        public void Test_WhenInputShowInfoBeforeStart()
+        {
+            //Arrange
+            string input = "show info";
+
+            //Act
+            var result = _parser.Parse(input);
+
+            //Assert
+            Assert.Equal(Command.InvalidInput, result.Command);
+        }
+
+        [Fact]
         public void Test_WhenInputShowInfo()
         {
             //Arrange
@@ -238,6 +251,19 @@ namespace UserInputTest
         {
             //Arrange
             string input = "add ability zalupa polnaya 13 стихия";
+
+            //Act
+            var result = _parser.Parse(input);
+
+            //Assert
+            Assert.Equal(Command.InvalidInput, result.Command);
+        }
+
+        [Fact]
+        public void Test_WhenInputAddAbilityBeforeStart()
+        {
+            //Arrange
+            string input = "add ability arti artorius 4 Air";
 
             //Act
             var result = _parser.Parse(input);

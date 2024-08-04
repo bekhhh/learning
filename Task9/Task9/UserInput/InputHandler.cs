@@ -13,19 +13,15 @@ namespace Task9.UserInput
         }
         public void HandlerInput()
         {
-            Console.WriteLine(CharactersList.PrintCharacters, Environment.NewLine);
-            Console.WriteLine(InputInstructions.StartRules, Environment.NewLine);
+            Console.WriteLine(CharactersList.PrintCharacters + Environment.NewLine);
+            Console.WriteLine(InputInstructions.StartRules + Environment.NewLine);
             Character? character = null;
             while (true)
             {
                 try
                 {
                     var input = Console.ReadLine();
-                    var result = Parser.Parse(input);
-                    if (result.Character is not null) 
-                    {
-                        character = result.Character;
-                    }                    
+                    var result = Parser.Parse(input);                                      
 
                     switch (result.Command)
                     {
@@ -33,20 +29,21 @@ namespace Task9.UserInput
                             Console.WriteLine(result.Message);
                             continue;
                         case Command.GetItems:
-                            character.PrintItems(); 
+                            result.Character?.PrintItems(); 
                             continue;
                         case Command.GetDescription:
-                            character.PrintСharacteristic(); 
+                            result.Character?.PrintСharacteristic(); 
                             continue;
                         case Command.Start:
-                            character.PrintJson(); 
-                            Console.WriteLine(InputInstructions.AfterStartRules);
+                            character = result.Character;
+                            character?.PrintJson(); 
+                            Console.WriteLine(InputInstructions.AfterStartRules + Environment.NewLine);
                             continue;
                         case Command.ShowInfo:
-                            character.PrintJson(); 
+                            character?.PrintJson(); 
                             continue;
                         case Command.AddAbility:                            
-                                character.Abilities.Add(result.Ability);
+                                character?.Abilities.Add(result.Ability);
                                 Console.WriteLine($"Способность {result.Ability.Name} добавлена.");                            
                             continue;
                     }

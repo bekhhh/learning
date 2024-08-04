@@ -7,7 +7,7 @@ namespace Task9.UserInput.CommandParsing
 {
     public class CommandParser
     {
-        private bool hasStarted;
+        private bool _hasStarted;
         private readonly Dictionary<string, Character> _characters = new Dictionary<string, Character>
         {
             { nameof(Ranger), new Ranger() },
@@ -76,12 +76,12 @@ namespace Task9.UserInput.CommandParsing
                 return new CommandParsingResult(Command.InvalidInput,
                 $"Персонажа {input[1]} не существует. Укажите в команде персонажа из начального списка.");
             }
-            if (hasStarted)
+            if (_hasStarted)
             {
                 return new CommandParsingResult(Command.InvalidInput,
                 "Команду start можно использовать один раз за запуск. Введите другую команду.");
             }
-            hasStarted = true;
+            _hasStarted = true;
             return new CommandParsingResult(Command.Start, character: character);
         }
 
@@ -96,6 +96,11 @@ namespace Task9.UserInput.CommandParsing
             {
                 return new CommandParsingResult(Command.InvalidInput,
                 $"Не удалось распознать команду info {input[1]}");
+            }
+            if (!_hasStarted)
+            {
+                return new CommandParsingResult(Command.InvalidInput,
+                "Не удалось вызвать команду show info, так как еще не вызвалась команда start.");
             }
             return new CommandParsingResult(Command.ShowInfo);
         }
@@ -136,6 +141,11 @@ namespace Task9.UserInput.CommandParsing
             {
                 return new CommandParsingResult(Command.InvalidInput,
                     "В команде add ability на 5 позиции должно быть слово одной из стихии: Earth, Fire, Water, Air.");
+            }
+            if (!_hasStarted)
+            {
+                return new CommandParsingResult(Command.InvalidInput,
+                "Не удалось вызвать команду add ability, так как еще не вызвалась команда start.");
             }
             var newAbility = new Ability(input[2], input[3], manaCost, element);
             return new CommandParsingResult(Command.AddAbility, ability: newAbility);
