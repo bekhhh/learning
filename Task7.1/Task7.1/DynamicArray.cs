@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 
 namespace Task7._1
 {
-    public class DynamicArray<T>
+    public class DynamicArray<T> : IEnumerable<T>
     {
         private T[] _array;
         private int _size;
@@ -45,15 +46,16 @@ namespace Task7._1
             Length--;
         }
 
-        public T GetByIndex(int index)
+        public IEnumerator<T> GetEnumerator() 
         {
-            if (index < 0 || index >= _currentIndex)
-            {
-                throw new IndexOutOfRangeException("Индекс выходит за пределы диапазона");
+            for (int i = 0; i > _currentIndex; i++) 
+            { 
+                yield return _array[i];
             }
-            return _array[index];
         }
 
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        
         public T this[int index]
         {
             get

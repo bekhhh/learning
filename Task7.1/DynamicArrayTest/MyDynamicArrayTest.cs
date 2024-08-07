@@ -15,7 +15,7 @@ namespace DynamicArrayTest
             dynamicArray.AddToEnd(1);
 
             //Assert
-            Assert.Equal(1, dynamicArray.GetByIndex(0));
+            Assert.Equal(1, dynamicArray[0]);
             Assert.Equal(1, dynamicArray.Length);
         }
 
@@ -32,7 +32,7 @@ namespace DynamicArrayTest
             dynamicArray.AddToEnd(4);
 
             //Assert
-            Assert.Equal(4, dynamicArray.GetByIndex(3));
+            Assert.Equal(4, dynamicArray[3]);
             Assert.Equal(4, dynamicArray.Length);
         }
 
@@ -66,7 +66,7 @@ namespace DynamicArrayTest
 
             //Assert
             Assert.Equal(1, dynamicArray.Length);
-            Assert.Equal(3, dynamicArray.GetByIndex(0));
+            Assert.Equal(3, dynamicArray[0]);
         }
 
         [Fact]
@@ -83,8 +83,8 @@ namespace DynamicArrayTest
 
             //Assert
             Assert.Equal(2, dynamicArray.Length);
-            Assert.Equal(5, dynamicArray.GetByIndex(0));
-            Assert.Equal(7, dynamicArray.GetByIndex(1));
+            Assert.Equal(5, dynamicArray[0]);
+            Assert.Equal(7, dynamicArray[1]);
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace DynamicArrayTest
             int index = 0;
                        
             //Assert
-            Assert.Throws<IndexOutOfRangeException>(() => dynamicArray.GetByIndex(index));
+            Assert.Throws<IndexOutOfRangeException>(() => dynamicArray[index]);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace DynamicArrayTest
             int index = 3;
 
             //Assert
-            Assert.Throws<IndexOutOfRangeException>(() => dynamicArray.GetByIndex(index));
+            Assert.Throws<IndexOutOfRangeException>(() => dynamicArray[index]);
         }
 
         [Theory]
@@ -141,9 +141,9 @@ namespace DynamicArrayTest
             dynamicArray.AddToEnd(value3);
 
             // Assert
-            Assert.Equal(value1, dynamicArray.GetByIndex(0));
-            Assert.Equal(value2, dynamicArray.GetByIndex(1));
-            Assert.Equal(value3, dynamicArray.GetByIndex(2));
+            Assert.Equal(value1, dynamicArray[0]);
+            Assert.Equal(value2, dynamicArray[1]);
+            Assert.Equal(value3, dynamicArray[2]);
             Assert.Equal(3, dynamicArray.Length);
         }
 
@@ -168,9 +168,9 @@ namespace DynamicArrayTest
             dynamicArray.RemoveElement(3);
 
             // Assert
-            Assert.Equal(value1, dynamicArray.GetByIndex(0));
-            Assert.Equal(value3, dynamicArray.GetByIndex(1));   
-            Assert.Equal(value4, dynamicArray.GetByIndex(2));
+            Assert.Equal(value1, dynamicArray[0]);
+            Assert.Equal(value3, dynamicArray[1]);   
+            Assert.Equal(value4, dynamicArray[2]);
             Assert.Equal(3, dynamicArray.Length);
         }
 
@@ -189,31 +189,34 @@ namespace DynamicArrayTest
             dynamicArray.AddToEnd(value3);
 
             // Assert
-            Assert.Equal(value1, dynamicArray.GetByIndex(0));
-            Assert.Equal(value2, dynamicArray.GetByIndex(1));
-            Assert.Equal(value3, dynamicArray.GetByIndex(2));
+            Assert.Equal(value1, dynamicArray[0]);
+            Assert.Equal(value2, dynamicArray[1]);
+            Assert.Equal(value3, dynamicArray[2]);
             Assert.Equal(3, dynamicArray.Length);
         }
 
         [Fact]
-        public void Enumerate_Items_Success()
+        public void Enumerate_Items_Success() 
         {
             //Arrange
-            var dynamicArray = new DynamicArray<int>();
-            dynamicArray.AddToEnd(5);
-            dynamicArray.AddToEnd(3);
-            dynamicArray.AddToEnd(7);
-            var list = new MyLinkedArray<int>(dynamicArray);
-            var index = 0;
+            var dynamicArray = new int[] { 2, 4, 5, 7 };
+            var target = new DynamicArray<int>();
+            target.AddToEnd(dynamicArray[0]);
+            target.AddToEnd(dynamicArray[1]);
+            target.AddToEnd(dynamicArray[2]);
+            target.AddToEnd(dynamicArray[3]);
 
+            var index = 0;
             //Act
+
+
             //Assert
-            foreach (var item in list)
+            foreach (var item in target) 
             {
                 Assert.Equal(dynamicArray[index], item);
                 index++;
             }
-            Assert.Equal(3, dynamicArray.Length);
+            Assert.Equal(4, dynamicArray.Length);
         }
     }
 }
