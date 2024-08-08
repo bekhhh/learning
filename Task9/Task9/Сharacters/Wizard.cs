@@ -10,7 +10,7 @@ namespace Task9.Сharacters
 
         public Wizard()
         {
-            Items.Add(new Item(ItemsNames.Staff));
+            Items.Add(new Item(ItemsNames.Staff, "+7 к урону"));
         }
     }
 }
