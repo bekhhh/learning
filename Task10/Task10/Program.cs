@@ -1,3 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Task10;
+using Task10.UserInteraction;
 
-Console.WriteLine("Hello, World!");
+var start = new InputHandler();
+start.HandlerInput();
