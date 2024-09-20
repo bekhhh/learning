@@ -16,15 +16,10 @@ public class ParsingResultTest
 
     public ParsingResultTest()
     {
-        // Создаем экземпляры TaskManager, FileWriter и ConsolePrinter
         _taskManager = new TaskManager();
         _fileWriter = new FileWriter(_taskManager); 
         _consolePrinter = new ConsolePrinter();
-
-        // Передаем их в конструктор CommandParser
         _parser = new CommandParser(_taskManager, _fileWriter, _consolePrinter); 
-        
-        // Добавляем тестовую задачу для проверки
         _taskManager.Tasks.Add(new Task10.Task(1, "OldTask", DateTime.Now, PriorityType.Medium, "Old Description"));
     }
     

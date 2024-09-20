@@ -257,7 +257,6 @@ public class CommandParser()
                     return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для имени.");
                 }
                 break;
-
             case "date":
                 if (input[2].ToLower() == "asc")
                 {
@@ -273,7 +272,6 @@ public class CommandParser()
                     return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для даты.");
                 }
                 break;
-
             case "priority":
                 if (input[2].ToLower() == "asc")
                 {
@@ -289,7 +287,6 @@ public class CommandParser()
                     return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для приоритета.");
                 }
                 break;
-
             case "id":
                 if (input[2].ToLower() == "asc")
                 {
@@ -305,12 +302,10 @@ public class CommandParser()
                     return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для ID.");
                 }
                 break;
-
             default:
                 Console.WriteLine(TaskManagerInstructions.SortTaskInstruction + Environment.NewLine);
                 return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать параметр {input[1]} для сортировки.");
         }
-        
         return new CommandParsingResult(Command.Sort);
     }
 }
