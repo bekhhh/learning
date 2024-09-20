@@ -5,6 +5,8 @@ public enum Command
     Add, 
     Delete, 
     Update, 
-    View,
-    InvalidInput
+    InvalidInput,
+    Exit,
+    Sort,
+    Help
 }

@@ -1,19 +1,31 @@
 using Task10;
 using Task10.CommandParsing;
+using Task10.FileManager;
 using Xunit;
 using Assert = Xunit.Assert;
+using Task = System.Threading.Tasks.Task;
 
 namespace ParsingResultTest;
 
 public class ParsingResultTest
 {
-    private readonly CommandParser _parser;
-    private readonly TaskManager _taskManager;
+    private CommandParser _parser;
+    private TaskManager _taskManager;
+    private FileWriter _fileWriter;
+    private ConsolePrinter _consolePrinter;
 
     public ParsingResultTest()
     {
-        _taskManager = new TaskManager(); 
-        _parser = new CommandParser(_taskManager); 
+        // Создаем экземпляры TaskManager, FileWriter и ConsolePrinter
+        _taskManager = new TaskManager();
+        _fileWriter = new FileWriter(_taskManager); 
+        _consolePrinter = new ConsolePrinter();
+
+        // Передаем их в конструктор CommandParser
+        _parser = new CommandParser(_taskManager, _fileWriter, _consolePrinter); 
+        
+        // Добавляем тестовую задачу для проверки
+        _taskManager.Tasks.Add(new Task10.Task(1, "OldTask", DateTime.Now, PriorityType.Medium, "Old Description"));
     }
     
     [Fact]
@@ -165,9 +177,11 @@ public class ParsingResultTest
     public void Test_DeleteByIndex()
     {
         // Arrange
-        string addContent = "add xuy \"ejednevnaya drochka  add fasdh fsdhai\" 31.12.21 23.59.59 +03:00 Low";
+        string addContent = "add xuy \"ejednevnaya drochka bla bla bla\" 31.12.21 23.59.59 +03:00 Low";
         var addResult = _parser.ParseCommand(addContent);
         Assert.Equal(Command.Add, addResult.Command);
+        _taskManager.Tasks.Add(addResult.Task);
+        
         string deleteContent = "delete 1";
 
         // Act
@@ -175,5 +189,35 @@ public class ParsingResultTest
 
         // Assert
         Assert.Equal(Command.Delete, result.Command);
+    }
+    
+    [Fact]
+    public void Test_UpdateTask_Success()
+    {
+        // Arrange
+        string input = "update 1 NewTask \"New Description\" 21.09.23 10.30.00 +03:00 Low";
+
+        // Act
+        var result = _parser.ParseCommand(input);
+
+        // Assert
+        Assert.Equal(Command.Update, result.Command);
+        Assert.Equal("NewTask", result.Task.Name);
+        Assert.Equal("New Description", result.Task.Description);
+        Assert.Equal(PriorityType.Low, result.Task.Priority);
+    }
+    
+    [Fact]
+    public void Test_UpdateTask_TaskNotFound()
+    {
+        // Arrange
+        string input = "update 999 NewTask";
+
+        // Act
+        var result = _parser.ParseCommand(input);
+
+        // Assert
+        Assert.Equal(Command.InvalidInput, result.Command);
+        Assert.Equal("Задача с номером 999 не найдена.", result.Message);
     }
 }
