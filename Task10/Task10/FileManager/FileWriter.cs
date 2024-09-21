@@ -7,11 +7,13 @@ namespace Task10.FileManager;
 public class FileWriter
 {
     private TaskManager _taskManager;
-    private string filePath = @"C:\Projects\learning\Task10\Task10\bin\Debug\net8.0\Tasks.txt";
+    private string filePath;
 
     public FileWriter(TaskManager taskManager)
     {
         _taskManager = taskManager;
+        string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        filePath = Path.Combine(exeDirectory, "Tasks.txt");
     }
     
     public void WriteTasksToFile()

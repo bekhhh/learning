@@ -6,9 +6,14 @@ namespace Task10.FileManager;
 
 public class ConsolePrinter
 {
-    string filePath = @"C:\Projects\learning\Task10\Task10\bin\Debug\net8.0\Tasks.txt";
-    string[] tasks;
-    
+    private string exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    private string filePath;
+
+    public ConsolePrinter()
+    {
+        filePath = Path.Combine(exeDirectory, "Tasks.txt");
+    }
+
     public void PrintTasks(List<Task> tasks)
     {
         Console.Clear();
