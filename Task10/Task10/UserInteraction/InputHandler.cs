@@ -1,77 +1,68 @@
-﻿using Task10.CommandParsing;
-using Task10.FileManager;
+﻿using Task10.Interfaces;
+using Task10.Models;
 
 namespace Task10.UserInteraction;
 
 public class InputHandler
 {
-    public CommandParser Parser { get; }
-    public ConsolePrinter ConsolePrinter { get; }
-    public TaskManager TaskManager { get; }
-    public FileWriter FileWriter { get; }
+    private readonly ICommandParser _parser;
+    private readonly IConsolePrinter _consolePrinter;
+    private readonly ITaskManager _taskManager;
+    private readonly ITaskRepository _taskRepository;
 
-    public InputHandler()
+    public InputHandler(ICommandParser parser, IConsolePrinter consolePrinter, ITaskManager taskManager, ITaskRepository taskRepository)
     {
-        TaskManager = new TaskManager();
-        ConsolePrinter = new ConsolePrinter();
-        Parser = new CommandParser(TaskManager,FileWriter,ConsolePrinter);
-        FileWriter = new FileWriter(TaskManager); 
+        _parser = parser;
+        _consolePrinter = consolePrinter;
+        _taskManager = taskManager;
+        _taskRepository = taskRepository;
     }
 
-    public void HandlerInput()
+    public void HandleInput()
     {
-        Console.WriteLine(TaskManagerInstructions.GeneralInstruction);
+        _taskRepository.LoadTasks();
+        _taskRepository.PrintTasks();
+        _consolePrinter(InstructionConstants.StartInstruction);
         while (true)
         {
             try
             {
                 var input = Console.ReadLine();
-                var result = Parser.ParseCommand(input);
+                var result = _parser.ParseCommand(input);
                 switch (result.Command)
                 {
                     case Command.InvalidInput:
-                        Console.WriteLine(result.Message);
+                        _consolePrinter.PrintMessage(result.Message);
                         continue;
 
                     case Command.Add:
-                        TaskManager.Tasks.Add(result.Task);
-                        FileWriter.WriteTasksToFile();
-                        ConsolePrinter.PrintTasks(TaskManager.Tasks); 
-                        Console.WriteLine($"Задача {result.Task.Name} добавлена.");
+                        _taskManager.AddTask(result.Task);
                         continue;
 
                     case Command.Delete:
-                        TaskManager.Tasks.Remove(result.Task);
-                        FileWriter.WriteTasksToFile();
-                        ConsolePrinter.PrintTasks(TaskManager.Tasks); 
-                        Console.WriteLine($"Задача под номером {result.Task.Id} удалена.");
+                        _taskManager.DeleteTask(result.Task);
+                        continue;
+                    
+                    case Command.Update:
+                        _taskManager.UpdateTask(result.Task);
                         continue;
 
                     case Command.Exit:
-                        FileWriter.WriteTasksToFile();
-                        Console.WriteLine("Выход из программы.");
+                        _taskManager.ExitApplication();
                         return;
 
                     case Command.Sort:
-                        FileWriter.WriteTasksToFile(); 
-                        ConsolePrinter.PrintTasks(TaskManager.Tasks); 
-                        Console.WriteLine("Задачи отсортированы.");
-                        continue;
-
-                    case Command.Update:
-                        FileWriter.WriteTasksToFile();
-                        ConsolePrinter.PrintTasks(TaskManager.Tasks); 
-                        Console.WriteLine($"Задача под номером {result.Task.Id} обновлена.");
+                        _taskManager.SortTasks();
                         continue;
 
                     case Command.Help:
-                        Console.WriteLine(result.Message);
+                        _taskManager.HelpMessage();
                         continue;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _consolePrinter.PrintMessage(ex.Message);
             }
         }
     }

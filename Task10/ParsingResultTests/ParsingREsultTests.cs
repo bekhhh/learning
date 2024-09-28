@@ -1,6 +1,8 @@
 using Task10;
 using Task10.CommandParsing;
 using Task10.FileManager;
+using Task10.Models;
+using Task10.UserInteraction;
 using Xunit;
 using Assert = Xunit.Assert;
 using Task = System.Threading.Tasks.Task;
@@ -11,16 +13,14 @@ public class ParsingResultTest
 {
     private CommandParser _parser;
     private TaskManager _taskManager;
-    private FileWriter _fileWriter;
     private ConsolePrinter _consolePrinter;
 
     public ParsingResultTest()
     {
         _taskManager = new TaskManager();
-        _fileWriter = new FileWriter(_taskManager); 
         _consolePrinter = new ConsolePrinter();
-        _parser = new CommandParser(_taskManager, _fileWriter, _consolePrinter); 
-        _taskManager.Tasks.Add(new Task10.Task(1, "OldTask", DateTime.Now, PriorityType.Medium, "Old Description"));
+        _parser = new CommandParser(_taskManager, _consolePrinter); 
+        _taskManager.Tasks.Add(new Task10.Models.Task(1, "OldTask", DateTime.Now, Priority.Medium, "Old Description"));
     }
     
     [Fact]
@@ -35,7 +35,7 @@ public class ParsingResultTest
         //Assert
         Assert.Equal(Command.Add, result.Command);
         Assert.Equal("xuy", result.Task.Name);
-        Assert.Equal(PriorityType.Low, result.Task.Priority);
+        Assert.Equal(Priority.Low, result.Task.Priority);
     }
     
     [Fact]
@@ -199,7 +199,7 @@ public class ParsingResultTest
         Assert.Equal(Command.Update, result.Command);
         Assert.Equal("NewTask", result.Task.Name);
         Assert.Equal("New Description", result.Task.Description);
-        Assert.Equal(PriorityType.Low, result.Task.Priority);
+        Assert.Equal(Priority.Low, result.Task.Priority);
     }
     
     [Fact]

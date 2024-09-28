@@ -1,4 +1,4 @@
-﻿namespace Task10;
+﻿namespace Task10.Models;
 
 public enum Command
 {

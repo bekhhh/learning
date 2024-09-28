@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Newtonsoft.Json.Converters;
 
-namespace Task10;
+namespace Task10.Models;
 
 [JsonConverter(typeof(StringEnumConverter))]
-public enum PriorityType
+public enum Priority
 {
     High,
     Medium,

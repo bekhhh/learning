@@ -1,4 +1,7 @@
-﻿namespace Task10.CommandParsing;
+﻿using Task10.Models;
+using Task = Task10.Models.Task;
+
+namespace Task10.CommandParsing;
 
 public class CommandParsingResult
 {
