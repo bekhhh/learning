@@ -7,12 +7,16 @@ public class CommandParsingResult
 {
     public Command Command { get; }
     public string? Message { get; }
-    public Task? Task { get; }
+    public TaskRequest TaskRequest { get; set; }
+    public int Id { get; set; }
 
-    public CommandParsingResult(Command command, string? message = null, Task? task = null)
+    public CommandParsingResult(Command command, string? message = null, TaskRequest? taskRequest = null,
+        int id = 0)
+
     {
         Command = command;
+        TaskRequest = taskRequest;
         Message = message;
-        Task = task;
+        Id = id;
     }
-}  
+}

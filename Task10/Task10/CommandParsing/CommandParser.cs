@@ -9,7 +9,6 @@ namespace Task10.CommandParsing;
 
 public class CommandParser() : ICommandParser
 {
-    private int _nextTaskId = 1;
     private TaskManager _taskManager;
 
     public CommandParser(TaskManager taskManager) : this()
@@ -115,9 +114,9 @@ public class CommandParser() : ICommandParser
         {
             priority = Priority.Medium;
         }
-
-        var newTask = new Task(_nextTaskId++, taskName, dateTime, priority, taskDescription);
-        return new CommandParsingResult(Command.Add, task: newTask);
+        
+        var newTaskRequest = new TaskRequest(taskName, dateTime, priority, taskDescription);
+        return new CommandParsingResult(Command.Update, taskRequest: newTaskRequest);
     }
 
     private CommandParsingResult ParseDelete(string[] input)
@@ -132,7 +131,7 @@ public class CommandParser() : ICommandParser
         {
             return new CommandParsingResult(Command.InvalidInput, $"Задача с номером {taskId} не найдена.");
         }
-        return new CommandParsingResult(Command.Delete, task: task);
+        return new CommandParsingResult(Command.Delete, id: taskId);
     }
     
     private CommandParsingResult ParseUpdate(string[] input)
@@ -192,13 +191,20 @@ public class CommandParser() : ICommandParser
         }
 
         var dateTimeInput = input.Skip(dateTimeIndex).Take(3).ToArray();
-        if (!DateTime.TryParseExact(string.Join(" ", dateTimeInput),
-                "dd.MM.yy HH.mm.ss zzz",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out var dateTime))
+        DateTime dateTime = DateTime.Now;
+        string[] formats = {
+            "dd:MM:yy HH:mm:ss zzz",  
+            "dd:MM:yy HH:mm:ss",      
+        };
+        foreach (var format in formats)
         {
-            return new CommandParsingResult(Command.InvalidInput, "Неверный формат даты и времени.");
+            if (!DateTime.TryParseExact(string.Join(" ", dateTimeInput), format, CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out dateTime)) continue;
+            if (!format.Contains("zzz"))
+            {
+                dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Local);
+            }
+            break;
         }
 
         var priorityInputIndex = dateTimeIndex + 3;
@@ -207,8 +213,8 @@ public class CommandParser() : ICommandParser
         {
             priority = Priority.Medium;
         }
-        var updatedTask = new Task(taskId, taskName, dateTime, priority, taskDescription);
-        return new CommandParsingResult(Command.Update, task: updatedTask);
+        var newTaskRequest = new TaskRequest(taskName, dateTime, priority, taskDescription, taskId);
+        return new CommandParsingResult(Command.Update, taskRequest: newTaskRequest);
     }
 
     private CommandParsingResult ParseSort(string[] input)
