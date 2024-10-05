@@ -3,6 +3,6 @@
 public record Task(
     int Id,
     string Name,
-    DateTime DateTime,
-    Priority Priority = Priority.Medium,
-    string? Description = null);
+    string? Description = null,
+    DateTime? DateTime = null,
+    Priority Priority = Priority.Medium);

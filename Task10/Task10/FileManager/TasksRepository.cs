@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Threading.Channels;
 using Task10.Interfaces;
+using Task10.Models;
 using Task = Task10.Models.Task;
 
 namespace Task10.FileManager;
@@ -17,15 +18,21 @@ public class TasksRepository : ITaskRepository
         _filePath = Path.Combine(exeDirectory, "Tasks.txt");
     }
   
-    public void SaveTasks(List<Task> tasks)
+    public void SaveTasks(List<Task> tasks, int lastIndexId)
     {
-        var jsonFormat = JsonSerializer.Serialize(tasks);
+        var dataToSave = new StorageData()
+        {
+            Tasks = tasks,
+            LastIndexId = lastIndexId
+        };
+
+        var jsonFormat = JsonSerializer.Serialize(dataToSave);
         File.WriteAllText(_filePath, jsonFormat);
     }
 
     public void LoadTasks()
     {
-        if (File.Exists(_filePath))
+        if (!File.Exists(_filePath))
         {
             _consolePrinter.PrintMessage("Файл не найден");
         }

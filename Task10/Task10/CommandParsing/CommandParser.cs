@@ -2,20 +2,14 @@
 using System.Text.RegularExpressions;
 using Task10.Interfaces;
 using Task10.Models;
+using Task10.Requests;
 using Task10.UserInteraction;
 using Task = Task10.Models.Task;
 
 namespace Task10.CommandParsing;
 
-public class CommandParser() : ICommandParser
+public class CommandParser : ICommandParser
 {
-    private TaskManager _taskManager;
-
-    public CommandParser(TaskManager taskManager) : this()
-    {
-        _taskManager = taskManager;
-    }
-
     public CommandParsingResult ParseCommand(string input)
     {
         if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
@@ -116,7 +110,7 @@ public class CommandParser() : ICommandParser
         }
         
         var newTaskRequest = new TaskRequest(taskName, dateTime, priority, taskDescription);
-        return new CommandParsingResult(Command.Update, taskRequest: newTaskRequest);
+        return new CommandParsingResult(Command.Add, taskRequest: newTaskRequest);
     }
 
     private CommandParsingResult ParseDelete(string[] input)
@@ -126,12 +120,8 @@ public class CommandParser() : ICommandParser
             return new CommandParsingResult(Command.InvalidInput, "Не удалось распознать номер задачи.");
         }
 
-        var task = _taskManager.Tasks.FirstOrDefault(t => t.Id == taskId);
-        if (task == null)
-        {
-            return new CommandParsingResult(Command.InvalidInput, $"Задача с номером {taskId} не найдена.");
-        }
-        return new CommandParsingResult(Command.Delete, id: taskId);
+        var deleteTaskRequest = new TaskRequest(id: taskId);
+        return new CommandParsingResult(Command.Delete, taskRequest: deleteTaskRequest);
     }
     
     private CommandParsingResult ParseUpdate(string[] input)
@@ -139,12 +129,6 @@ public class CommandParser() : ICommandParser
         if (input.Length < 2 || !int.TryParse(input[1], out var taskId))
         {
             return new CommandParsingResult(Command.InvalidInput, "Не удалось распознать номер задачи.");
-        }
-
-        var task = _taskManager.Tasks.FirstOrDefault(t => t.Id == taskId);
-        if (task == null)
-        {
-            return new CommandParsingResult(Command.InvalidInput, $"Задача с номером {taskId} не найдена.");
         }
 
         if (input.Length < 5)
@@ -213,84 +197,30 @@ public class CommandParser() : ICommandParser
         {
             priority = Priority.Medium;
         }
-        var newTaskRequest = new TaskRequest(taskName, dateTime, priority, taskDescription, taskId);
-        return new CommandParsingResult(Command.Update, taskRequest: newTaskRequest);
+        var updateTaskRequest = new TaskRequest(taskName, dateTime, priority, taskDescription,taskId);
+        return new CommandParsingResult(Command.Update, taskRequest: updateTaskRequest);
     }
 
     private CommandParsingResult ParseSort(string[] input)
     {
-        if (_taskManager.Tasks.Count < 2)
-        {
-            return new CommandParsingResult(Command.InvalidInput, "Сортировка невозможна: недостаточно задач.");
-        }
-    
-        if (input.Length < 3)
+        if (input.Length < 2)
         {
             return new CommandParsingResult(Command.InvalidInput, "Не удалось распознать команду.");
         }
-
-        var sorter = new Sorter(_taskManager);
-        switch (input[1].ToLower())
+        var field = input[1].ToLower();
+        var direction = input.Length > 2 ? input[2].ToLower() switch
         {
-            case "name":
-                if (input[2].ToLower() == "asc")
-                {
-                    sorter.SortByNameAsc();
-                }
-                else if (input[2].ToLower() == "desc")
-                {
-                    sorter.SortByNameDesc();
-                }
-                else
-                {
-                    return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для имени.");
-                }
-                break;
-            case "date":
-                if (input[2].ToLower() == "asc")
-                {
-                    sorter.SortByDateAsc();
-                }
-                else if (input[2].ToLower() == "desc")
-                {
-                    sorter.SortByDateDesc();
-                }
-                else
-                {
-                    return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для даты.");
-                }
-                break;
-            case "priority":
-                if (input[2].ToLower() == "asc")
-                {
-                    sorter.SortByPriorityAsc();
-                }
-                else if (input[2].ToLower() == "desc")
-                {
-                    sorter.SortByPriorityDesc();
-                }
-                else
-                {
-                    return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для приоритета.");
-                }
-                break;
-            case "id":
-                if (input[2].ToLower() == "asc")
-                {
-                    sorter.SortByIdAsc();
-                }
-                else if (input[2].ToLower() == "desc")
-                {
-                    sorter.SortByIdDesc();
-                }
-                else
-                {
-                    return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки {input[2]} для ID.");
-                }
-                break;
-            default:
-                return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать параметр {input[1]} для сортировки.");
+            "asc" => true,
+            "desc" => false,
+            _ => (bool?)null
+        } : true;
+
+        if (direction == null)
+        {
+            return new CommandParsingResult(Command.InvalidInput, $"Не удалось распознать направление сортировки: {input[2]}.");
         }
-        return new CommandParsingResult(Command.Sort);
+        
+        var newSortRequest = new SortRequest(field, direction.Value);
+        return new CommandParsingResult(Command.Sort, sortRequest: newSortRequest);
     }
 }

@@ -1,15 +1,16 @@
 ﻿using Task10.CommandParsing;
+using Task10.Requests;
 using Task = Task10.Models.Task;
 
 namespace Task10.Interfaces;
 
 public interface ITaskManager
 {
-    void AddTask(Task result);
-    void DeleteTask(Task result);
-    void UpdateTask(Task result);
+    void AddTask(TaskRequest addTaskRequest);
+    void DeleteTask(TaskRequest deleteTaskRequest);
+    void UpdateTask(TaskRequest updateTaskRequest);
     void ExitApplication();
-    void SortTasks();
+    void SortTasks(SortRequest sortRequest);
 
     void HelpMessage();
 }
