@@ -42,85 +42,9 @@ public class CommandParser : ICommandParser
     }
     private CommandParsingResult ParseAdd(string[] input)
     {
-        var taskName = input[1];
-        if (!Regex.IsMatch(taskName, "^[\x20-\x7E]+$"))
-        {
-            return new CommandParsingResult(Command.InvalidInput,
-                "Название задачи должно состоять только из печатаемых символов ASCII.");
-        }
-
-        string? taskDescription = null;
-        int descriptionEndIndex = -1;
-
-        if (input[2].StartsWith("\""))
-        {
-            var descriptionStartIndex = 2;
-            descriptionEndIndex = Array.FindIndex(input, descriptionStartIndex, x => x.EndsWith("\""));
-            if (descriptionEndIndex != -1)
-            {
-                taskDescription = string.Join(" ", input.Skip(descriptionStartIndex).Take(descriptionEndIndex - descriptionStartIndex + 1));
-                taskDescription = taskDescription.Trim('"');
-                if (!Regex.IsMatch(taskDescription, "^[\x20-\x7E]+$"))
-                {
-                    return new CommandParsingResult(Command.InvalidInput,
-                        "Описание задачи должно состоять только из печатаемых символов ASCII, включая пробелы.");
-                }
-            }
-            else
-            {
-                return new CommandParsingResult(Command.InvalidInput,
-                    "Описание задачи должно заканчиваться кавычкой.");
-            }
-        }
-        else
-        {
-            return new CommandParsingResult(Command.InvalidInput,
-                "Описание задачи должно начинаться кавычкой.");
-        }
-
-        DateTime dateAndTime = DateTime.Now;
-        int dateTimeIndex = descriptionEndIndex + 1;
-        int priorityIndex = descriptionEndIndex + 1;
-        
-        if (dateTimeIndex < input.Length)
-        {
-            if (input[dateTimeIndex].StartsWith("\""))
-            {
-                int dateTimeEndIndex = Array.FindIndex(input, dateTimeIndex, x => x.EndsWith("\""));
-                
-                if (dateTimeEndIndex != -1)
-                {
-                    var dateTimeString = string.Join(" ", input.Skip(dateTimeIndex).Take(dateTimeEndIndex - dateTimeIndex + 1)).Trim('"');
-                    
-                    if (!DateTime.TryParse(dateTimeString, out dateAndTime))
-                    {
-                        return new CommandParsingResult(Command.InvalidInput, "Не удалось распознать дату и время.");
-                    }
-                    
-                    priorityIndex = dateTimeEndIndex + 1;
-                }
-                else
-                {
-                    return new CommandParsingResult(Command.InvalidInput, "Дата и время должны заканчиваться кавычкой.");
-                }
-            }
-        }
-
-        var priority = Priority.Medium;
-        if (priorityIndex < input.Length)
-        {
-            if (!Enum.TryParse<Priority>(input[priorityIndex], true, out var parsedPriority))
-            {
-                return new CommandParsingResult(Command.InvalidInput, 
-                    $"Некорректный приоритет задачи. Допустимые значения: High, Medium, Low.");
-            }
-            priority = parsedPriority;
-        }
-
-        var newTaskRequest = new TaskRequest(taskName, dateAndTime, priority, taskDescription);
-        return new CommandParsingResult(Command.Add, taskRequest: newTaskRequest);
+        return ParseTask(input, isUpdate: false);
     }
-    
+
     private CommandParsingResult ParseUpdate(string[] input)
     {
         if (input.Length < 2 || !int.TryParse(input[1], out var taskId))
@@ -128,64 +52,64 @@ public class CommandParser : ICommandParser
             return new CommandParsingResult(Command.InvalidInput, "Не удалось распознать номер задачи.");
         }
 
-        if (input.Length < 4)
-        {
-            return new CommandParsingResult(Command.InvalidInput,
-                "Команда update должна содержать название, описание, дату и приоритет.");
-        }
+        return ParseTask(input, isUpdate: true, taskId);
+    }
+
+    private CommandParsingResult ParseTask(string[] input, bool isUpdate = false, int taskId = -1)
+    {
+        int startIndex = isUpdate ? 2 : 1;
     
-        var taskName = input[2];
+        if (startIndex >= input.Length)
+        {
+            return new CommandParsingResult(Command.InvalidInput, "Отсутствует название задачи.");
+        }
+
+        var taskName = input[startIndex];
         if (!Regex.IsMatch(taskName, "^[\x20-\x7E]+$"))
         {
-            return new CommandParsingResult(Command.InvalidInput,
-                "Название задачи должно состоять только из печатаемых символов ASCII.");
+            return new CommandParsingResult(Command.InvalidInput, "Название задачи должно состоять только из печатаемых символов ASCII.");
         }
     
         string? taskDescription = null;
         int descriptionEndIndex = -1;
 
-        if (input[3].StartsWith("\""))
+        if (startIndex + 1 < input.Length && input[startIndex + 1].StartsWith("\""))
         {
-            int descriptionStartIndex = 3;
+            var descriptionStartIndex = startIndex + 1;
             descriptionEndIndex = Array.FindIndex(input, descriptionStartIndex, x => x.EndsWith("\""));
             if (descriptionEndIndex != -1)
             {
                 taskDescription = string.Join(" ", input.Skip(descriptionStartIndex).Take(descriptionEndIndex - descriptionStartIndex + 1)).Trim('"');
                 if (!Regex.IsMatch(taskDescription, "^[\x20-\x7E]+$"))
                 {
-                    return new CommandParsingResult(Command.InvalidInput,
-                        "Описание задачи должно состоять только из печатаемых символов ASCII.");
+                    return new CommandParsingResult(Command.InvalidInput, "Описание задачи должно состоять только из печатаемых символов ASCII.");
                 }
             }
             else
             {
-                return new CommandParsingResult(Command.InvalidInput,
-                    "Описание задачи должно заканчиваться кавычкой.");
+                return new CommandParsingResult(Command.InvalidInput, "Описание задачи должно заканчиваться кавычкой.");
             }
         }
     
         DateTime dateAndTime = DateTime.Now;
-        int dateTimeIndex = descriptionEndIndex + 1;
-        int priorityIndex = descriptionEndIndex + 1;
+        int dateTimeIndex = descriptionEndIndex != -1 ? descriptionEndIndex + 1 : startIndex + 1;
+        int priorityIndex = dateTimeIndex;
 
-        if (dateTimeIndex < input.Length)
+        if (dateTimeIndex < input.Length && input[dateTimeIndex].StartsWith("\""))
         {
-            if (input[dateTimeIndex].StartsWith("\""))
+            int dateTimeEndIndex = Array.FindIndex(input, dateTimeIndex, x => x.EndsWith("\""));
+            if (dateTimeEndIndex != -1)
             {
-                int dateTimeEndIndex = Array.FindIndex(input, dateTimeIndex, x => x.EndsWith("\""));
-                if (dateTimeEndIndex != -1)
+                var dateTimeString = string.Join(" ", input.Skip(dateTimeIndex).Take(dateTimeEndIndex - dateTimeIndex + 1)).Trim('"');
+                if (!DateTime.TryParse(dateTimeString, out dateAndTime))
                 {
-                    var dateTimeString = string.Join(" ", input.Skip(dateTimeIndex).Take(dateTimeEndIndex - dateTimeIndex + 1)).Trim('"');
-                    if (!DateTime.TryParse(dateTimeString, out dateAndTime))
-                    {
-                        return new CommandParsingResult(Command.InvalidInput, "Не удалось распознать дату и время.");
-                    }
-                    priorityIndex = dateTimeEndIndex + 1;
+                    return new CommandParsingResult(Command.InvalidInput, "Не удалось распознать дату и время.");
                 }
-                else
-                {
-                    return new CommandParsingResult(Command.InvalidInput, "Дата и время должны заканчиваться кавычкой.");
-                }
+                priorityIndex = dateTimeEndIndex + 1;
+            }
+            else
+            {
+                return new CommandParsingResult(Command.InvalidInput, "Дата и время должны заканчиваться кавычкой.");
             }
         }
     
@@ -194,14 +118,15 @@ public class CommandParser : ICommandParser
         {
             if (!Enum.TryParse<Priority>(input[priorityIndex], true, out var parsedPriority))
             {
-                return new CommandParsingResult(Command.InvalidInput,
-                    $"Некорректный приоритет задачи. Допустимые значения: High, Medium, Low.");
+                return new CommandParsingResult(Command.InvalidInput, "Некорректный приоритет задачи. Допустимые значения: High, Medium, Low.");
             }
             priority = parsedPriority;
         }
     
-        var updateTaskRequest = new TaskRequest(taskName, dateAndTime, priority, taskDescription, taskId);
-        return new CommandParsingResult(Command.Update, taskRequest: updateTaskRequest);
+        var taskRequest = new TaskRequest(taskName, dateAndTime, priority, taskDescription, taskId);
+        return isUpdate
+            ? new CommandParsingResult(Command.Update, taskRequest: taskRequest)
+            : new CommandParsingResult(Command.Add, taskRequest: taskRequest);
     }
 
     private CommandParsingResult ParseDelete(string[] input)
