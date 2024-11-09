@@ -1,3 +1,4 @@
+using System.Globalization;
 using Task10.CommandParsing;
 using Task10.Interfaces;
 using Task10.Models;
@@ -9,159 +10,143 @@ namespace ParsingResultTest;
 public class ParsingResultTest
 {
     private ICommandParser _parser;
-    
+
     public ParsingResultTest()
     {
         _parser = new CommandParser();
     }
-    
+
     [Fact]
     public void Test_WhenEverythingIsRight()
     {
-        //Arrange            
-        string input = "add xuy \"ejednevnaya drochka  add fasdh fsdhai\" 31:12:21 23:59:59 +03:00 Low";
+        // Arrange
+        string input = "add task_name \"task description\" \"31.12.2021 23:59:59\" Low";
 
-        //Act
+        // Act
         var result = _parser.ParseCommand(input);
 
-        //Assert
+        // Assert
         Assert.Equal(Command.Add, result.Command);
-        Assert.Equal("xuy", result.TaskRequest.Name);
+        Assert.Equal("task_name", result.TaskRequest.Name);
+        Assert.Equal("task description", result.TaskRequest.Description);
         Assert.Equal(Priority.Low, result.TaskRequest.Priority);
     }
-    
-    [Fact]
-    public void Test_WhenDescriptionIsNull()
-    {
-        //Arrange            
-        string input = "add drochka 31:12:21 23:59:59 +03:00 High";
 
-        //Act
+    [Fact]
+    public void Test_WhenPriorityIsDefault()
+    {
+        // Arrange
+        string input = "add task_name \"task description\" \"31.12.2021 23:59:59\"";
+
+        // Act
         var result = _parser.ParseCommand(input);
 
-        //Assert
+        // Assert
         Assert.Equal(Command.Add, result.Command);
-    }
-    
-    [Fact]
-    public void Test_WhenPriorityIsNull()
-    {
-        //Arrange            
-        string input = "add drochka \"ejednevnaya drochka\" 31:12:21 23:59:59 +03:00";
-
-        //Act
-        var result = _parser.ParseCommand(input);
-
-        //Assert
-        Assert.Equal(Command.Add, result.Command);
-    }
-    
-    [Fact]
-    public void Test_WhenPriorityAndDescriptionAreNull()
-    {
-        //Arrange            
-        string input = "add drochka 31:12:21 23:59:59 +03:00";
-
-        //Act
-        var result = _parser.ParseCommand(input);
-
-        //Assert
-        Assert.Equal(Command.Add, result.Command);
+        Assert.Equal("task_name", result.TaskRequest.Name);
+        Assert.Equal("task description", result.TaskRequest.Description);
+        Assert.Equal(Priority.Medium, result.TaskRequest.Priority);
     }
 
     [Fact]
-    public void TryParse_WhenInputIs_Empty()
+    public void Test_WhenDateAndPriorityIsDefault()
     {
-        //Arrange            
+        // Arrange
+        string input = "add task_name \"task description\"";
+
+        // Act
+        var result = _parser.ParseCommand(input);
+
+        // Assert
+        Assert.Equal(Command.Add, result.Command);
+        Assert.Equal("task_name", result.TaskRequest.Name);
+        Assert.Equal("task description", result.TaskRequest.Description);
+        Assert.Equal(Priority.Medium, result.TaskRequest.Priority);
+    }
+    
+    [Fact]
+    public void Test_WhenDateIsDefault()
+    {
+        // Arrange
+        string input = "add task_name \"task description\" High";
+
+        // Act
+        var result = _parser.ParseCommand(input);
+
+        // Assert
+        Assert.Equal(Command.Add, result.Command);
+        Assert.Equal("task_name", result.TaskRequest.Name);
+        Assert.Equal("task description", result.TaskRequest.Description);
+        Assert.Equal(Priority.High, result.TaskRequest.Priority);
+    }
+
+    [Fact]
+    public void Test_WhenInputIsEmpty()
+    {
+        // Arrange
         string input = "";
 
-        //Act
+        // Act
         var result = _parser.ParseCommand(input);
 
-        //Assert
+        // Assert
         Assert.Equal(Command.InvalidInput, result.Command);
     }
 
     [Fact]
-    public void Test_WhenFirstWordAdd()
+    public void Test_InvalidName_NonAscii()
     {
-        //Arrange
-        string input = "add";
+        // Arrange
+        string input = "add не_ascii_name \"task description\" [31.12.2021 23:59:59 +03:00] Low";
 
-        //Act
+        // Act
         var result = _parser.ParseCommand(input);
 
-        //Assert
+        // Assert
         Assert.Equal(Command.InvalidInput, result.Command);
     }
-    
+
     [Fact]
-    public void Test_NameOfTask_ForASCII()
+    public void Test_DescriptionMissingQuotes()
     {
-        //Arrange
-        string input = "add залупа";
+        // Arrange
+        string input = "add task_name task description [31.12.2021 23:59:59 +03:00] Low";
 
-        //Act
+        // Act
         var result = _parser.ParseCommand(input);
 
-        //Assert
+        // Assert
         Assert.Equal(Command.InvalidInput, result.Command);
     }
-    
+
     [Fact]
-    public void Test_DescriptionOfTask_ForASCII()
+    public void Test_InvalidDateFormat()
     {
-        //Arrange
-        string input = "add name \"залупа полнейшая\" ";
+        // Arrange
+        string input = "add task_name \"task description\" [31.12.2021 23:59:59 +03:00] Low";
 
-        //Act
+        // Act
         var result = _parser.ParseCommand(input);
 
-        //Assert
+        // Assert
         Assert.Equal(Command.InvalidInput, result.Command);
     }
-    
+
     [Fact]
-    public void Test_DescriptionOfTask_WithoutQuotes()
+    public void Test_InvalidPriority()
     {
-        //Arrange
-        string input = "add name залупа полнейшая ";
+        // Arrange
+        string input = "add task_name \"task description\" \"31.12.2021 23:59:59\" invalid_priority";
 
-        //Act
+        // Act
         var result = _parser.ParseCommand(input);
 
-        //Assert
+        // Assert
         Assert.Equal(Command.InvalidInput, result.Command);
     }
-    
+
     [Fact]
-    public void Test_DateAndTimeInIncorrentFormat()
-    {
-        //Arrange            
-        string input = "add drochka \" ejednevnaya drochka \" 31:12:21 23:59:59 +03:00 High";
-
-        //Act
-        var result = _parser.ParseCommand(input);
-
-        //Assert
-        Assert.Equal(Command.InvalidInput, result.Command);
-    }
-    
-    [Fact]
-    public void Test_WhenPriorityIsInvalid()
-    {
-        //Arrange            
-        string input = "add drochka \" ejednevnaya drochka \" 31:12:21 23:59:59 +03:00 zalupa";
-
-        //Act
-        var result = _parser.ParseCommand(input);
-
-        //Assert
-        Assert.Equal(Command.InvalidInput, result.Command);
-    }
-    
-    [Fact]
-    public void Test_DeleteByIndex()
+    public void Test_DeleteCommandByIndex()
     {
         // Arrange
         string deleteContent = "delete 1";
@@ -172,12 +157,12 @@ public class ParsingResultTest
         // Assert
         Assert.Equal(Command.Delete, result.Command);
     }
-    
+
     [Fact]
     public void Test_UpdateTask_Success()
     {
         // Arrange
-        string input = "update 1 NewTask \"New Description\" 31:12:21 23:59:59 +03:00 Low";
+        string input = "update 1 NewTask \"New Description\" \"31.12.2021 23:59:59\" Low";
 
         // Act
         var result = _parser.ParseCommand(input);
@@ -189,5 +174,3 @@ public class ParsingResultTest
         Assert.Equal(Priority.Low, result.TaskRequest.Priority);
     }
 }
-    
-    

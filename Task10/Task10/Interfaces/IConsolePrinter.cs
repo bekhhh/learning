@@ -1,4 +1,5 @@
-﻿using Task = Task10.Models.Task;
+﻿using Task10.Models;
+using Task = Task10.Models.Task;
 
 namespace Task10.Interfaces;
 

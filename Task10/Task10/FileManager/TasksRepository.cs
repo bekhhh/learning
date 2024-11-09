@@ -14,33 +14,28 @@ public class TasksRepository : ITaskRepository
     public TasksRepository(IConsolePrinter consolePrinter)
     {
         _consolePrinter = consolePrinter;
-        var exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
-        _filePath = Path.Combine(exeDirectory, "Tasks.txt");
+        _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tasks.txt");
     }
   
-    public void SaveTasks(List<Task> tasks, int lastIndexId)
+    public void SaveTasks(StorageData storageData)
     {
-        var dataToSave = new StorageData()
-        {
-            Tasks = tasks,
-            LastIndexId = lastIndexId
-        };
-
-        var jsonFormat = JsonSerializer.Serialize(dataToSave);
+        var jsonFormat = JsonSerializer.Serialize(storageData);
         File.WriteAllText(_filePath, jsonFormat);
     }
 
-    public void LoadTasks()
+    public StorageData LoadTasks()
     {
         if (!File.Exists(_filePath))
         {
             _consolePrinter.PrintMessage("Файл не найден");
         }
-        File.ReadAllText(_filePath);
-    }
-
-    public void PrintTasks()
-    {
-        _consolePrinter.PrintMessage(File.ReadAllText(_filePath));
+        var jsonData = File.ReadAllText(_filePath);
+        if (string.IsNullOrWhiteSpace(jsonData))
+        {
+            _consolePrinter.PrintMessage("Пока нет задач");
+            return new StorageData();
+        }
+        var storageData =  JsonSerializer.Deserialize<StorageData>(jsonData);
+        return storageData;
     }
 }

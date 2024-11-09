@@ -11,91 +11,69 @@ namespace Task10;
 public class TaskManager : ITaskManager
 {
     private readonly ITaskRepository _tasksRepository;
-    private readonly IConsolePrinter _consolePrinter;
-    private readonly StorageData _storageData;
 
-    public TaskManager(ITaskRepository tasksRepository, IConsolePrinter consolePrinter, StorageData storageData)
+    public TaskManager(ITaskRepository tasksRepository)
     {
         _tasksRepository = tasksRepository;
-        _consolePrinter = consolePrinter;
-        _storageData = storageData;
     }
 
-    public void AddTask(TaskRequest addTaskRequest)
+    public StorageData AddTask(TaskRequest addTaskRequest)
     {
-        _tasksRepository.LoadTasks();
-        var newTask = new Task(_storageData.LastIndexId++, addTaskRequest.Name, addTaskRequest.Description, addTaskRequest.DateTime, addTaskRequest.Priority);
-        _storageData.Tasks.Add(newTask);
-        _tasksRepository.SaveTasks(_storageData.Tasks, _storageData.LastIndexId); 
-        _consolePrinter.PrintTasks(_storageData.Tasks); 
-        _consolePrinter.PrintMessage($"Задача {newTask.Name} добавлена.");
+        var storageData = _tasksRepository.LoadTasks();
+        var newTask = new Task(storageData.LastIndexId++, addTaskRequest.Name, addTaskRequest.Description, addTaskRequest.DateTime, addTaskRequest.Priority);
+        storageData.Tasks.Add(newTask);
+        _tasksRepository.SaveTasks(storageData); 
+        
+        return storageData;
     }
-    
-    public void DeleteTask(TaskRequest deleteTaskRequest)
+
+    public StorageData DeleteTask(TaskRequest deleteTaskRequest)
     {
-        var taskToDelete = _storageData.Tasks.FirstOrDefault(t => t.Id == deleteTaskRequest.Id);
+        var storageData = _tasksRepository.LoadTasks();
+        var taskToDelete = storageData.Tasks.FirstOrDefault(t => t.Id == deleteTaskRequest.Id);
         if (taskToDelete != null)
         {
-            _storageData.Tasks.Remove(taskToDelete);
-            _tasksRepository.SaveTasks(_storageData.Tasks, _storageData.LastIndexId);
-            _consolePrinter.PrintTasks(_storageData.Tasks); 
-            _consolePrinter.PrintMessage($"Задача под номером {taskToDelete.Id} удалена.");
+            storageData.Tasks.Remove(taskToDelete);
+            _tasksRepository.SaveTasks(storageData);
         }
-        else
-        {
-            _consolePrinter.PrintMessage($"Задача с ID {deleteTaskRequest.Id} не найдена.");
-        }
+        return storageData;
     }
-    
-    public void UpdateTask(TaskRequest updateTaskRequest)
+
+    public StorageData UpdateTask(TaskRequest updateTaskRequest)
     {
-        var taskToUpdate = _storageData.Tasks.FirstOrDefault(t => t.Id == updateTaskRequest.Id);
+        var storageData = _tasksRepository.LoadTasks();
+        var taskToUpdate = storageData.Tasks.FirstOrDefault(t => t.Id == updateTaskRequest.Id);
         if (taskToUpdate != null)
         {
-            _storageData.Tasks.Remove(taskToUpdate);
-            _tasksRepository.LoadTasks();
-            var updatedTask = new Task(updateTaskRequest.Id, updateTaskRequest.Name,updateTaskRequest.Description, updateTaskRequest.DateTime, updateTaskRequest.Priority);
-            _storageData.Tasks.Add(updatedTask);
-            _tasksRepository.SaveTasks(_storageData.Tasks, _storageData.LastIndexId);
-            _consolePrinter.PrintTasks(_storageData.Tasks);
-            _consolePrinter.PrintMessage($"Задача {taskToUpdate.Name} обновлена.");
+            storageData.Tasks.Remove(taskToUpdate);
+            var updatedTask = new Task(updateTaskRequest.Id, updateTaskRequest.Name, updateTaskRequest.Description, updateTaskRequest.DateTime, updateTaskRequest.Priority);
+            storageData.Tasks.Add(updatedTask);
+            _tasksRepository.SaveTasks(storageData);
         }
-        else
-        {
-            _consolePrinter.PrintMessage($"Задача с ID {updateTaskRequest.Id} не найдена.");
-        }
+        return storageData;
     }
 
-    public void ExitApplication()
+    public StorageData SortTasks(SortRequest sortRequest)
     {
-        _consolePrinter.PrintMessage("Выход из программы.");
-    }
-
-    public void HelpMessage()
-    {
-        _consolePrinter.PrintMessage(InstructionConstants.StartInstruction);
-    }
-
-    public void SortTasks(SortRequest sortRequest)
-    {
+        var storageData = _tasksRepository.LoadTasks();
         var sortedTasks = sortRequest.Field.ToLower() switch
         {
             "name" => sortRequest.Ascending
-                ? _storageData.Tasks.OrderBy(t => t.Name).ToList()
-                : _storageData.Tasks.OrderByDescending(t => t.Name).ToList(),
+                ? storageData.Tasks.OrderBy(t => t.Name).ToList()
+                : storageData.Tasks.OrderByDescending(t => t.Name).ToList(),
             "datetime" => sortRequest.Ascending
-                ? _storageData.Tasks.OrderBy(t => t.DateTime).ToList()
-                : _storageData.Tasks.OrderByDescending(t => t.DateTime).ToList(),
+                ? storageData.Tasks.OrderBy(t => t.DateTime).ToList()
+                : storageData.Tasks.OrderByDescending(t => t.DateTime).ToList(),
             "priority" => sortRequest.Ascending
-                ? _storageData.Tasks.OrderBy(t => t.Priority).ToList()
-                : _storageData.Tasks.OrderByDescending(t => t.Priority).ToList(),
+                ? storageData.Tasks.OrderBy(t => t.Priority).ToList()
+                : storageData.Tasks.OrderByDescending(t => t.Priority).ToList(),
             "id" => sortRequest.Ascending
-                ? _storageData.Tasks.OrderBy(t => t.Id).ToList()
-                : _storageData.Tasks.OrderByDescending(t => t.Id).ToList(),
+                ? storageData.Tasks.OrderBy(t => t.Id).ToList()
+                : storageData.Tasks.OrderByDescending(t => t.Id).ToList(),
             _ => throw new InvalidOperationException($"Поле для сортировки '{sortRequest.Field}' не распознано.")
         };
-        
-        _consolePrinter.PrintTasks(sortedTasks);
-        _consolePrinter.PrintMessage("Задачи отсортированы.");
+
+        storageData.Tasks = sortedTasks;
+        return storageData;
     }
 }

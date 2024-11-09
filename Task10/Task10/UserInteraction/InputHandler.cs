@@ -17,10 +17,11 @@ public class InputHandler
         _taskManager = taskManager;
         _taskRepository = taskRepository;
     }
+
     public void HandleInput()
     {
-        _taskRepository.LoadTasks();
-        _taskRepository.PrintTasks();
+        var loadTask = _taskRepository.LoadTasks();
+        _consolePrinter.PrintTasks(loadTask.Tasks);
         _consolePrinter.PrintMessage(InstructionConstants.StartInstruction);
         while (true)
         {
@@ -35,27 +36,35 @@ public class InputHandler
                         continue;
 
                     case Command.Add:
-                        _taskManager.AddTask(result.TaskRequest);
+                        var addedTask = _taskManager.AddTask(result.TaskRequest);
+                        _consolePrinter.PrintTasks(addedTask.Tasks);
+                        _consolePrinter.PrintMessage($"Задача {result.TaskRequest.Name} добавлена.");
                         continue;
 
                     case Command.Delete:
-                        _taskManager.DeleteTask(result.TaskRequest);
+                        var deleteTask = _taskManager.DeleteTask(result.TaskRequest);
+                        _consolePrinter.PrintTasks(deleteTask.Tasks);
+                        _consolePrinter.PrintMessage($"Задача с ID {result.TaskRequest.Id} удалена.");
                         continue;
-                    
+
                     case Command.Update:
-                        _taskManager.UpdateTask(result.TaskRequest);
+                        var updateTask = _taskManager.UpdateTask(result.TaskRequest);
+                        _consolePrinter.PrintTasks(updateTask.Tasks);
+                        _consolePrinter.PrintMessage($"Задача {result.TaskRequest.Name} обновлена.");
                         continue;
 
                     case Command.Exit:
-                        _taskManager.ExitApplication();
+                        _consolePrinter.PrintMessage("Выход из программы");
                         return;
 
                     case Command.Sort:
-                        _taskManager.SortTasks(result.SortRequest);
+                       var sortTask =  _taskManager.SortTasks(result.SortRequest);
+                        _consolePrinter.PrintTasks(sortTask.Tasks);
+                        _consolePrinter.PrintMessage("Задачи отсортированы.");
                         continue;
 
                     case Command.Help:
-                        _taskManager.HelpMessage();
+                        _consolePrinter.PrintMessage(InstructionConstants.StartInstruction);
                         continue;
                 }
             }
