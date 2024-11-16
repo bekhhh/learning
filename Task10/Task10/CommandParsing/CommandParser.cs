@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using Task10.Interfaces;
 using Task10.Models;
@@ -10,6 +11,10 @@ namespace Task10.CommandParsing;
 
 public class CommandParser : ICommandParser
 {
+    private readonly List<string> _inputParts = new();
+    private readonly StringBuilder _currentPart = new();
+    private bool _startQuotes;
+    
     public CommandParsingResult ParseCommand(string input)
     {
         if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
@@ -17,27 +22,57 @@ public class CommandParser : ICommandParser
             return new CommandParsingResult(Command.InvalidInput,
                 "Не получилось распознать команду. Введите строку в нужном формате.");
         }
-        var words = input.Split(' ')
-            .Select(x => x.Trim())
-            .Where(x => !string.IsNullOrEmpty(x))
-            .ToArray();
-        switch (words[0].ToLower())
+
+        foreach (var symbol in input)
+        {
+            if (symbol == '"')
+            {
+                _currentPart.Append(symbol);
+                if (_startQuotes)
+                {
+                    _inputParts.Add(_currentPart.ToString());
+                    _currentPart.Clear();
+                }
+                _startQuotes =!_startQuotes;
+            }
+            else if (!_startQuotes && char.IsWhiteSpace(symbol))
+            {
+                if (_currentPart.Length == 0)
+                {
+                    continue;
+                }
+                _inputParts.Add(_currentPart.ToString());
+                _currentPart.Clear();
+            }
+            else
+            {
+                _currentPart.Append(symbol);
+            }
+        }
+
+        if (_currentPart.Length != 0)
+        {
+            _inputParts.Add(_currentPart.ToString());
+        }
+
+        var inputArray = _inputParts.ToArray();
+        switch (inputArray[0])
         {
             case "add":
-                return ParseAdd(words);
+                return ParseAdd(inputArray);
             case "delete":
-                return ParseDelete(words);
+                return ParseDelete(inputArray);
             case "update":
-                return ParseUpdate(words);
+                return ParseUpdate(inputArray);
             case "sort":
-                return ParseSort(words);
+                return ParseSort(inputArray);
             case "exit":
                 return new CommandParsingResult(Command.Exit);
             case "help":
                 return new CommandParsingResult(Command.Help, message: InstructionConstants.StartInstruction + Environment.NewLine);
             default:
                 return new CommandParsingResult(Command.InvalidInput,
-                    $"Не удалось распознать команду {words[0]}.");
+                    $"Не удалось распознать команду {inputArray[0]}.");
         }
     }
     private CommandParsingResult ParseAdd(string[] input)
