@@ -11,10 +11,6 @@ namespace Task10.CommandParsing;
 
 public class CommandParser : ICommandParser
 {
-    private readonly List<string> _inputParts = new();
-    private readonly StringBuilder _currentPart = new();
-    private bool _startQuotes;
-    
     public CommandParsingResult ParseCommand(string input)
     {
         if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
@@ -23,39 +19,8 @@ public class CommandParser : ICommandParser
                 "Не получилось распознать команду. Введите строку в нужном формате.");
         }
 
-        foreach (var symbol in input)
-        {
-            if (symbol == '"')
-            {
-                _currentPart.Append(symbol);
-                if (_startQuotes)
-                {
-                    _inputParts.Add(_currentPart.ToString());
-                    _currentPart.Clear();
-                }
-                _startQuotes =!_startQuotes;
-            }
-            else if (!_startQuotes && char.IsWhiteSpace(symbol))
-            {
-                if (_currentPart.Length == 0)
-                {
-                    continue;
-                }
-                _inputParts.Add(_currentPart.ToString());
-                _currentPart.Clear();
-            }
-            else
-            {
-                _currentPart.Append(symbol);
-            }
-        }
-
-        if (_currentPart.Length != 0)
-        {
-            _inputParts.Add(_currentPart.ToString());
-        }
-
-        var inputArray = _inputParts.ToArray();
+        var inputArray = SplitSymbols(input);
+        
         switch (inputArray[0])
         {
             case "add":
@@ -75,6 +40,48 @@ public class CommandParser : ICommandParser
                     $"Не удалось распознать команду {inputArray[0]}.");
         }
     }
+    
+    public string[] SplitSymbols(string input)
+    {
+        var inputParts = new List<string>();
+        var currentPart = new StringBuilder();
+        var startQuotes = false;
+        
+        foreach (var symbol in input)
+        {
+            if (symbol == '"')
+            {
+                currentPart.Append(symbol);
+                if (startQuotes)
+                {
+                    inputParts.Add(currentPart.ToString());
+                    currentPart.Clear();
+                }
+                startQuotes =!startQuotes;
+            }
+            else if (!startQuotes && char.IsWhiteSpace(symbol))
+            {
+                if (currentPart.Length == 0)
+                {
+                    continue;
+                }
+                inputParts.Add(currentPart.ToString());
+                currentPart.Clear();
+            }
+            else
+            {
+                currentPart.Append(symbol);
+            }
+        }
+
+        if (currentPart.Length != 0)
+        {
+            inputParts.Add(currentPart.ToString());
+        }
+
+        return inputParts.ToArray();
+    }
+    
     private CommandParsingResult ParseAdd(string[] input)
     {
         return ParseTask(input, isUpdate: false);
@@ -125,7 +132,11 @@ public class CommandParser : ICommandParser
                 return new CommandParsingResult(Command.InvalidInput, "Описание задачи должно заканчиваться кавычкой.");
             }
         }
-    
+        else
+        {
+            return new CommandParsingResult(Command.InvalidInput, "Описание задачи должно начинаться кавычкой.");
+        }
+
         DateTime dateAndTime = DateTime.Now;
         int dateTimeIndex = descriptionEndIndex != -1 ? descriptionEndIndex + 1 : startIndex + 1;
         int priorityIndex = dateTimeIndex;
@@ -146,8 +157,9 @@ public class CommandParser : ICommandParser
             {
                 return new CommandParsingResult(Command.InvalidInput, "Дата и время должны заканчиваться кавычкой.");
             }
+            
         }
-    
+
         var priority = Priority.Medium;
         if (priorityIndex < input.Length)
         {

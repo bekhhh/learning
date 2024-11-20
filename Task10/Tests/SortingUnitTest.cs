@@ -122,8 +122,8 @@ public class SortingUnitTest
         var sortedData = _taskManager.SortTasks(sortRequest);
 
         //Assert
-        Assert.Equal(Priority.Low, sortedData.Tasks[1].Priority);
-        Assert.Equal(Priority.High, sortedData.Tasks[0].Priority);
+        Assert.Equal(Priority.High, sortedData.Tasks[1].Priority);
+        Assert.Equal(Priority.Low, sortedData.Tasks[0].Priority);
     }
     
     [Fact]

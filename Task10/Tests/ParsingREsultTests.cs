@@ -173,4 +173,59 @@ public class ParsingResultTest
         Assert.Equal("New Description", result.TaskRequest.Description);
         Assert.Equal(Priority.Low, result.TaskRequest.Priority);
     }
+
+    [Fact]
+    public void Test_SplitSymbols_ReturnEmptyArray()
+    {
+        //Arrange
+        var input = string.Empty;
+        var expected = new string[0];
+
+        //Act
+        var result = _parser.SplitSymbols(input) ;
+
+        //Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void Test_SplitSymbolsWithoutQuotes()
+    {
+        //Arrange
+        var input = "Vlados suval palets v jopu";
+        var expected = new[] {"Vlados", "suval", "palets", "v", "jopu" };
+        
+        //Act
+        var result = _parser.SplitSymbols(input);
+
+        //Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void Test_SplitSymbolsWithQuotes_KeepEmptySpace()
+    {
+        //Arrange
+        var input = "Vlados \"suval v jopu dva\" paltsa ";
+        var expected = new[] { "Vlados", "\"suval v jopu dva\"", "paltsa" };
+        //Act
+        var result = _parser.SplitSymbols(input);
+        
+        //Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void Test_SplitSymbolsWithMultipleQuotedParts_KeepEachQuotedPartTogether()
+    {
+        //Arrange
+        var input = "Vlados \"suval v jopu\" i \"tri\" paltsa ";
+        var expected = new[] { "Vlados", "\"suval v jopu\"", "i", "\"tri\"", "paltsa" };
+
+        //Act
+        var result = _parser.SplitSymbols(input);
+
+        //Assert
+        Assert.Equal(expected, result);
+    }
 }
