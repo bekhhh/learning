@@ -9,11 +9,9 @@ namespace Task10.FileManager;
 public class TasksRepository : ITaskRepository
 {
     private readonly string _filePath;
-    private readonly IConsolePrinter _consolePrinter;
 
-    public TasksRepository(IConsolePrinter consolePrinter)
+    public TasksRepository()
     {
-        _consolePrinter = consolePrinter;
         _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tasks.txt");
     }
   
@@ -27,12 +25,11 @@ public class TasksRepository : ITaskRepository
     {
         if (!File.Exists(_filePath))
         {
-            _consolePrinter.PrintMessage("Файл не найден");
+            return new StorageData();
         }
         var jsonData = File.ReadAllText(_filePath);
         if (string.IsNullOrWhiteSpace(jsonData))
         {
-            _consolePrinter.PrintMessage("Пока нет задач");
             return new StorageData();
         }
         var storageData =  JsonSerializer.Deserialize<StorageData>(jsonData);

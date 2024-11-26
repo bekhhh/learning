@@ -20,7 +20,7 @@ public class TaskManager : ITaskManager
     public StorageData AddTask(TaskRequest addTaskRequest)
     {
         var storageData = _tasksRepository.LoadTasks();
-        var newTask = new Task(storageData.LastIndexId++, addTaskRequest.Name, addTaskRequest.Description, addTaskRequest.DateTime, addTaskRequest.Priority);
+        var newTask = new Task(++storageData.LastIndexId, addTaskRequest.Name, addTaskRequest.Description, addTaskRequest.DateTime, addTaskRequest.Priority);
         storageData.Tasks.Add(newTask);
         _tasksRepository.SaveTasks(storageData); 
         
@@ -45,9 +45,17 @@ public class TaskManager : ITaskManager
         var taskToUpdate = storageData.Tasks.FirstOrDefault(t => t.Id == updateTaskRequest.Id);
         if (taskToUpdate != null)
         {
-            storageData.Tasks.Remove(taskToUpdate);
-            var updatedTask = new Task(updateTaskRequest.Id, updateTaskRequest.Name, updateTaskRequest.Description, updateTaskRequest.DateTime, updateTaskRequest.Priority);
-            storageData.Tasks.Add(updatedTask);
+            var updatedTask = taskToUpdate with
+            {
+                Name = updateTaskRequest.Name,
+                Description = updateTaskRequest.Description,
+                DateTime = updateTaskRequest.DateTime,
+                Priority = updateTaskRequest.Priority
+            };
+            
+            var index = storageData.Tasks.IndexOf(taskToUpdate);
+            storageData.Tasks[index] = updatedTask;
+
             _tasksRepository.SaveTasks(storageData);
         }
         return storageData;

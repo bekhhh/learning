@@ -2,6 +2,6 @@
 
 public class StorageData
 {
-    public int LastIndexId { get; set; } = 1;
+    public int LastIndexId { get; set; }
     public List<Task> Tasks { get; set; } = new();
 }
