@@ -1,0 +1,82 @@
+1.Получить всех пользователей, которые взяли в аренду книги за последний месяц.
+
+SELECT users.name
+FROM users
+JOIN loans ON users.user_id = loans.user_id
+WHERE loan_date BETWEEN CURRENT_DATE - INTERVAL '1 MONTH' AND CURRENT_DATE;
+
+2.Вывести список всех книг, которые никогда не брали в аренду.
+
+SELECT books.title
+FROM books
+LEFT JOIN loans ON books.book_id = loans.book_id
+WHERE loan_date IS NULL
+
+3.Найти средний год публикации всех книг, автором которых является конкретный автор, скажем, "Александр Пушкин".
+
+SELECT AVG(books.published_year)
+FROM books
+JOIN authors ON books.author_id = authors.author_id
+WHERE authors.name = 'Александр Пушкин'
+
+4.Подсчитать общее количество книг в библиотеке, написанных после 2000 года.
+
+SELECT COUNT(books.book_id)
+FROM books
+WHERE published_year > 2000;
+
+5.Вывести список всех авторов с указанием количества книг, которые они написали
+
+SELECT authors.name, COUNT(book_id) AS number_of_books
+FROM authors
+LEFT JOIN books ON authors.author_id = books.author_id
+GROUP BY authors.name
+
+6.Все студенты, у которых есть 2
+
+SELECT DISTINCT students.first_name AS poor_students
+FROM students
+JOIN grades on students.student_id = grades.student_id
+WHERE grade = 2
+
+7.Количество четверок по узбекскому языку
+
+SELECT COUNT(grade)
+FROM grades
+RIGHT JOIN subjects ON grades.subject_id = subjects.subject_id
+WHERE subject_name = 'Узбекский' and grade = 4
+
+8. Кафедру, в которой у студентов в среднем самые высокие оценки.
+
+SELECT students.department, AVG(grade) AS average_grade
+from students
+JOIN grades ON students.student_id = grades.student_id
+GROUP BY students.department
+ORDER BY average_grade DESC
+LIMIT 1
+
+9.Предмет, у которого больше всего двоек.
+
+SELECT subjects.subject_name, COUNT(grade) AS two
+FROM subjects
+JOIN grades ON subjects.subject_id = grades.subject_id
+WHERE grade = 2
+GROUP BY subjects.subject_name
+ORDER BY two DESC
+
+10.Получить всех круглых отличников по математике
+всех учеников, у кого 5 по физике
+
+
+SELECT DISTINCT first_name, students.last_name
+FROM students
+JOIN grades ON students.student_id = grades.student_id
+JOIN subjects ON grades.subject_id = subjects.subject_id
+WHERE grades.grade = 5 and subject_name = 'Физика'
+
+11.Найти всех однофамильцев
+
+SELECT public.students.last_name
+FROM students
+GROUP BY last_name
+HAVING COUNT(*) > 1
