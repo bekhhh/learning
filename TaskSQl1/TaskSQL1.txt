@@ -64,15 +64,15 @@ WHERE grade = 2
 GROUP BY subjects.subject_name
 ORDER BY two DESC
 
-10.Получить всех круглых отличников по математике
-всех учеников, у кого 5 по физике
+10.Получить всех круглых отличников
 
 
-SELECT DISTINCT first_name, students.last_name
+SELECT students.first_name
 FROM students
 JOIN grades ON students.student_id = grades.student_id
 JOIN subjects ON grades.subject_id = subjects.subject_id
-WHERE grades.grade = 5 and subject_name = 'Физика'
+GROUP BY first_name
+HAVING AVG(grade) = 5
 
 11.Найти всех однофамильцев
 
